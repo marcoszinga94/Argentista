@@ -1,0 +1,30 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { href: "/", label: "Inicio" },
+  { href: "/dolar", label: "Dólar" },
+  { href: "/inflacion", label: "Inflación" },
+];
+---
+
+<header class="[grid-area:header] p-4 bg-blue-500 text-white z-50">
+  <nav>
+    <div class="flex flex-col items-center justify-between mx-auto px-4">
+      <div class="flex items-center">
+        <a href="/" class="text-xl font-bold"><h1>ARGENTISTA</h1></a>
+      </div>
+      <div class="flex m-auto">
+        <ul class="flex gap-4">
+          {
+            navItems.map((item) => (
+              <a href={item.href} class={`hover:bg-blue-600 px-3 py-2 rounded ${currentPath === item.href ? "underline underline-offset-2" : ""}`}>
+                {item.label}
+              </a>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

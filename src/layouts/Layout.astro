@@ -1,0 +1,85 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+export interface Props {
+  title: string;
+  description?: string;
+  keywords?: string;
+  url?: string;
+  image?: string;
+}
+
+const {
+  title,
+  description = "ARGENTISTA es una aplicación que te permite conocer la economía de Argentina, con datos en tiempo real sobre la inflación y otros indicadores económicos.",
+  keywords = "inflación argentina, economía argentina, calculadora de inflación, estadísticas económicas",
+  url = "https://argentista.vercel.app/",
+  image = "/og_image.jpg",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Icono de la aplicación -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Generador del sitio -->
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Meta para el SEO -->
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Meta para redes sociales -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:url" content={url} />
+    <meta property="og:type" content="website" />
+
+    <!-- Meta para Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+
+    <!-- Código de Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7173856593005932" crossorigin="anonymous"></script>
+
+    <!-- Título de la página -->
+    <title>{title}</title>
+  </head>
+  <body class="bg-gray-100 text-gray-900">
+    <div id="app">
+      <Header />
+      <main class="[grid-area:main] px-4 py-8 flex-grow">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  #app {
+    height: 100vh;
+    display: grid;
+    grid-template-areas: "header" "main" "footer";
+    grid-template-rows: auto 1fr auto;
+  }
+</style>

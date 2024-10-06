@@ -1,16 +1,28 @@
 ---
-
+import Layout from "../layouts/Layout.astro";
+import InflationCalculator from "../components/InflationCalculator";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="ARGENTISTA">
+  <div class="flex flex-col items-center justify-center gap-8 m-auto max-w-5xl">
+    <p class="text-center text-xl prext-pretty">Una app para saber cómo va la economía de Argentina, como si fueras un estadista.</p>
+
+    <div class="flex flex-col items-center justify-center gap-8">
+      <InflationCalculator client:load />
+    </div>
+    
+    <p class="text-center text-lg">
+      ARGENTISTA te permite entender la evolución económica del país con datos en tiempo real, calculando la inflación de forma precisa y accesible. Con esta
+      herramienta, podrás tomar decisiones informadas, anticiparte a cambios en el mercado en base a información pasada y presente, y comprender mejor el impacto de la inflación en tu día a día.
+    </p>
+    
+    <p class="text-center text-md">
+      Explora las cifras de inflación, descubre cómo afectan a tu poder adquisitivo y prepárate para tomar el control de tus finanzas. ¡Empieza ahora a usar
+      ARGENTISTA y conviértete en un experto en economía argentina!
+    </p>
+
+    <p class="items-center justify-center text-center text-gray-500 text-sm">
+      Esta app está basada en la API de <a class="text-blue-500" href="https://argentinadatos.com/">ArgentinaDatos</a> y obtiene sus datos directamente de ella.
+    </p>
+  </div>
+</Layout>
