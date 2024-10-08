@@ -28,7 +28,7 @@ const DollarHistoryChart = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [selectedCasa, setSelectedCasa] = useState("blue");
-	const [timeRange, setTimeRange] = useState(0.25);
+	const [timeRange, setTimeRange] = useState(1);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
