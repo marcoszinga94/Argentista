@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const InflationCalculator = () => {
 	const [inflationData, setInflationData] = useState([]);
-	const [amount, setAmount] = useState("100");
+	const [amount, setAmount] = useState("1000");
 	const [startMonth, setStartMonth] = useState("");
 	const [startYear, setStartYear] = useState("");
 	const [endMonth, setEndMonth] = useState("");
