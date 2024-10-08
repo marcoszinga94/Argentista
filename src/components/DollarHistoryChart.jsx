@@ -12,7 +12,6 @@ import {
 } from "chart.js";
 import { format, subWeeks, subMonths } from "date-fns";
 import { es } from "date-fns/locale";
-import { fetchAndSaveData } from "../services/dataService"; // Importa la función para fetch y save
 
 ChartJS.register(
 	CategoryScale,
@@ -46,26 +45,15 @@ const DollarHistoryChart = () => {
 				? subMonths(endDate, timeRange)
 				: subWeeks(endDate, Math.floor(timeRange * 4));
 
-		const data = []; // Almacena los datos a obtener
-		let currentDate = startDate;
-
-		while (currentDate <= endDate) {
-			const formattedDate = format(currentDate, "yyyy/MM/dd");
-
-			const url = `https://api.argentinadatos.com/v1/cotizaciones/dolares/${selectedCasa}/${formattedDate}`;
-			await fetchAndSaveData(url); // Llama a la función para fetch y save
-
-			// Agrega el URL de los datos para la comparación
-			data.push(url);
-
-			currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
+		try {
+			const data = await fetchDataForDateRange(startDate, endDate);
+			const chartData = prepareChartData(data);
+			setChartData(chartData);
+		} catch (error) {
+			setError("Error al obtener los datos del dólar");
+		} finally {
+			setIsLoading(false);
 		}
-
-		// Aquí puedes cargar los datos desde el archivo JSON después de hacer el fetch
-		const existingData = JSON.parse(fs.readFileSync(dataFilePath, "utf-8"));
-		const chartData = prepareChartData(existingData);
-		setChartData(chartData);
-		setIsLoading(false);
 	};
 
 	const fetchDataForDateRange = async (startDate, endDate) => {
@@ -76,9 +64,18 @@ const DollarHistoryChart = () => {
 			const formattedDate = format(currentDate, "yyyy/MM/dd");
 
 			try {
-				const url = `https://api.argentinadatos.com/v1/cotizaciones/dolares/${selectedCasa}/${formattedDate}`;
-				const dayData = await fetchData(url);
-				data.push({ date: formattedDate, ...dayData });
+				const response = await fetch(
+					`https://api.argentinadatos.com/v1/cotizaciones/dolares/${selectedCasa}/${formattedDate}`,
+				);
+
+				if (response.ok) {
+					const dayData = await response.json();
+					data.push({ date: formattedDate, ...dayData });
+				} else {
+					console.warn(
+						`No hay datos disponibles para la fecha: ${formattedDate}`,
+					);
+				}
 			} catch (error) {
 				console.error(
 					`Error al obtener datos para la fecha ${formattedDate}:`,
@@ -164,9 +161,7 @@ const DollarHistoryChart = () => {
 
 	return (
 		<div className="bg-white p-6 rounded-lg shadow-md w-full">
-			<h2 className="text-2xl font-semibold mb-4">
-				Comparar Históricos del Dólar
-			</h2>
+			<h2 className="text-2xl font-semibold mb-4">Histórico del Dólar</h2>
 			<div className="mb-4 flex space-x-4">
 				<div>
 					<label htmlFor="casa-select" className="block mb-1">
@@ -174,13 +169,8 @@ const DollarHistoryChart = () => {
 					</label>
 					<select
 						id="casa-select"
-						multiple
-						value={selectedCasas}
-						onChange={(e) =>
-							setSelectedCasas(
-								Array.from(e.target.selectedOptions, (option) => option.value),
-							)
-						}
+						value={selectedCasa}
+						onChange={(e) => setSelectedCasa(e.target.value)}
 						className="p-2 border rounded"
 					>
 						{casasOptions.map((option) => (
