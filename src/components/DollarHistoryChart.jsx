@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -30,7 +30,6 @@ const DollarHistoryChart = () => {
   const [selectedCasa, setSelectedCasa] = useState("oficial");
   const [timeRange, setTimeRange] = useState(0.25);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     fetchDollarData();
   }, [selectedCasa, timeRange]);
