@@ -41,12 +41,17 @@ const DollarPrices = () => {
             <h3 className="text-xl font-medium mb-2">{price.nombre}</h3>
             <ul>
               <li className="mb-1">
-                <span className="font-medium">Compra:</span> ${price.compra?.toFixed(2) ?? "N/A"}
+                <span className="font-medium">Compra:</span> $
+                {price.compra?.toFixed(2) ?? "N/A"}
               </li>
               <li className="mb-1">
-                <span className="font-medium">Venta:</span> ${price.venta?.toFixed(2) ?? "N/A"}
+                <span className="font-medium">Venta:</span> $
+                {price.venta?.toFixed(2) ?? "N/A"}
               </li>
-              <li className="text-sm text-gray-600">Última actualización: {new Date(price.fechaActualizacion).toLocaleString()}</li>
+              <li className="text-sm text-gray-600">
+                Última actualización:{" "}
+                {new Date(price.fechaActualizacion).toLocaleString()}
+              </li>
             </ul>
           </div>
         ))}

@@ -9,7 +9,9 @@ const InflationChart = () => {
   useEffect(() => {
     const fetchInflationData = async () => {
       try {
-        const response = await fetch("https://api.argentinadatos.com/v1/finanzas/indices/inflacion");
+        const response = await fetch(
+          "https://api.argentinadatos.com/v1/finanzas/indices/inflacion"
+        );
         if (!response.ok) {
           throw new Error("No se pudo obtener la información de inflación");
         }
@@ -74,7 +76,9 @@ const InflationChart = () => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">Índices de Inflación Mensual</h2>
+      <h2 className="text-2xl font-semibold mb-4">
+        Índices de Inflación Mensual
+      </h2>
       {Object.entries(inflationData)
         .sort(([yearA], [yearB]) => yearB.localeCompare(yearA))
         .map(([year, data]) => (
@@ -85,7 +89,8 @@ const InflationChart = () => {
             >
               <span>{year}</span>
               <span className="text-sm font-normal">
-                Min: {data.min.toFixed(1)}% | Max: {data.max.toFixed(1)}% | Promedio: {(data.total / data.count).toFixed(1)}%
+                Min: {data.min.toFixed(1)}% | Max: {data.max.toFixed(1)}% |
+                Promedio: {(data.total / data.count).toFixed(1)}%
               </span>
               <span>{openYears[year] ? "▼" : "▶"}</span>
             </button>
@@ -100,7 +105,9 @@ const InflationChart = () => {
                   </thead>
                   <tbody>
                     {Object.entries(data.months)
-                      .sort(([monthA], [monthB]) => monthB.localeCompare(monthA))
+                      .sort(([monthA], [monthB]) =>
+                        monthB.localeCompare(monthA)
+                      )
                       .map(([month, value]) => (
                         <tr key={`${year}-${month}`} className="border-b">
                           <td className="p-2">{formatDate(year, month)}</td>

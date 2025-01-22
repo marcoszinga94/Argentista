@@ -18,7 +18,10 @@ const navItems = [
         <ul class="flex gap-4">
           {
             navItems.map((item) => (
-              <a href={item.href} class={`hover:bg-blue-600 px-3 py-2 rounded ${currentPath === item.href ? "underline underline-offset-2" : ""}`}>
+              <a
+                href={item.href}
+                class={`hover:bg-blue-600 px-3 py-2 rounded ${currentPath === item.href ? "underline underline-offset-2" : ""}`}
+              >
                 {item.label}
               </a>
             ))
