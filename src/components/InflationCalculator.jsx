@@ -41,6 +41,12 @@ const InflationCalculator = () => {
       );
       setEndMonth((latestDate.getMonth() + 1).toString().padStart(2, "0"));
       setEndYear(latestDate.getFullYear().toString());
+
+      const oneYearBefore = new Date(latestDate);
+      oneYearBefore.setFullYear(oneYearBefore.getFullYear() - 1);
+
+      setStartMonth((oneYearBefore.getMonth() + 1).toString().padStart(2, "0"));
+      setStartYear(oneYearBefore.getFullYear().toString());
     }
   }, [inflationData]);
 

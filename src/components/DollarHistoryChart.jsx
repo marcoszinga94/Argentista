@@ -23,8 +23,28 @@ ChartJS.register(
   Legend
 );
 
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    y: {
+      beginAtZero: false,
+      title: {
+        display: true,
+        text: "Precio en ARS",
+      },
+    },
+    x: {
+      title: {
+        display: true,
+        text: "Fecha",
+      },
+    },
+  },
+};
+
 const DollarHistoryChart = () => {
-  const [chartData, setChartData] = useState(null);
+  const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCasa, setSelectedCasa] = useState("oficial");
@@ -40,61 +60,60 @@ const DollarHistoryChart = () => {
 
     const endDate = new Date();
     const startDate =
-      timeRange >= 1
-        ? subMonths(endDate, timeRange)
-        : subWeeks(endDate, Math.floor(timeRange * 4));
+      timeRange === "all"
+        ? new Date(2000, 0, 1)
+        : timeRange >= 1
+          ? subMonths(endDate, timeRange)
+          : subWeeks(endDate, Math.floor(timeRange * 4));
 
     try {
       const data = await fetchDataForDateRange(startDate, endDate);
-      const chartData = prepareChartData(data);
-      setChartData(chartData);
+      if (!data.length) {
+        throw new Error(
+          "No se encontraron datos en el rango de fechas seleccionado."
+        );
+      }
+      setChartData(prepareChartData(data));
     } catch (error) {
-      setError("Error al obtener los datos del dólar");
+      setError(error.message || "Error al obtener los datos del dólar");
     } finally {
       setIsLoading(false);
     }
   };
 
   const fetchDataForDateRange = async (startDate, endDate) => {
-    const data = [];
+    const dates = [];
     let currentDate = startDate;
 
     while (currentDate <= endDate) {
-      const formattedDate = format(currentDate, "yyyy/MM/dd");
-
-      try {
-        const response = await fetch(
-          `https://api.argentinadatos.com/v1/cotizaciones/dolares/${selectedCasa}/${formattedDate}`
-        );
-
-        if (response.ok) {
-          const dayData = await response.json();
-          data.push({ date: formattedDate, ...dayData });
-        } else {
-          console.warn(
-            `No hay datos disponibles para la fecha: ${formattedDate}`
-          );
-        }
-      } catch (error) {
-        console.error(
-          `Error al obtener datos para la fecha ${formattedDate}:`,
-          error
-        );
-      }
-
+      dates.push(format(currentDate, "yyyy/MM/dd"));
       currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
     }
 
-    return data;
+    const data = await Promise.all(
+      dates.map(async (date) => {
+        try {
+          const response = await fetch(
+            `https://api.argentinadatos.com/v1/cotizaciones/dolares/${selectedCasa}/${date}`
+          );
+
+          if (response.ok) {
+            return { date, ...(await response.json()) };
+          } else {
+            console.warn(`No hay datos disponibles para la fecha: ${date}`);
+            return null;
+          }
+        } catch (error) {
+          console.error(`Error al obtener datos para la fecha ${date}:`, error);
+          return null;
+        }
+      })
+    );
+
+    return data.filter((item) => item); // Filtrar valores nulos
   };
 
   const prepareChartData = (data) => {
-    if (data.length === 0) {
-      throw new Error(
-        "No se encontraron datos en el rango de fechas seleccionado."
-      );
-    }
-
     const labels = data.map((item) =>
       format(new Date(item.date), "d MMM", { locale: es })
     );
@@ -148,16 +167,6 @@ const DollarHistoryChart = () => {
     );
   }
 
-  if (!chartData || chartData?.datasets[0]?.data.length === 0) {
-    return (
-      <div className="bg-white p-6 rounded-lg shadow-md w-full">
-        <div className="text-center">
-          No hay datos disponibles para el rango seleccionado.
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="bg-white p-6 rounded-lg shadow-md w-full">
       <h2 className="text-2xl font-semibold mb-4">Histórico del Dólar</h2>
@@ -186,7 +195,11 @@ const DollarHistoryChart = () => {
           <select
             id="time-range-select"
             value={timeRange}
-            onChange={(e) => setTimeRange(Number.parseFloat(e.target.value))}
+            onChange={(e) =>
+              setTimeRange(
+                e.target.value === "all" ? "all" : parseFloat(e.target.value)
+              )
+            }
             className="p-2 border rounded"
           >
             {timeRangeOptions.map((option) => (
@@ -198,28 +211,7 @@ const DollarHistoryChart = () => {
         </div>
       </div>
       <div className="h-96">
-        <Line
-          data={chartData}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: false,
-                title: {
-                  display: true,
-                  text: "Precio en ARS",
-                },
-              },
-              x: {
-                title: {
-                  display: true,
-                  text: "Fecha",
-                },
-              },
-            },
-          }}
-        />
+        <Line data={chartData} options={chartOptions} />
       </div>
     </div>
   );
