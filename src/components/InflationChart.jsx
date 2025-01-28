@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const InflationChart = () => {
   const [inflationData, setInflationData] = useState({});
-  const [openYears, setOpenYears] = useState({});
+  const [openDecades, setOpenDecades] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -16,13 +16,13 @@ const InflationChart = () => {
           throw new Error("No se pudo obtener la información de inflación");
         }
         const data = await response.json();
-        const groupedData = groupDataByYear(data);
+        const groupedData = groupDataByDecadeAndYear(data);
         setInflationData(groupedData);
 
-        const lastYear = Object.keys(groupedData).sort().pop();
-        setOpenYears(
-          Object.keys(groupedData).reduce((acc, year) => {
-            acc[year] = year === lastYear;
+        const lastDecade = Object.keys(groupedData).sort().pop();
+        setOpenDecades(
+          Object.keys(groupedData).reduce((acc, decade) => {
+            acc[decade] = decade === lastDecade;
             return acc;
           }, {})
         );
@@ -36,11 +36,16 @@ const InflationChart = () => {
     fetchInflationData();
   }, []);
 
-  const groupDataByYear = (data) => {
+  const groupDataByDecadeAndYear = (data) => {
     return data.reduce((acc, item) => {
       const [year, month] = item.fecha.split("-");
-      if (!acc[year]) {
-        acc[year] = {
+      const decade = `${Math.floor(year / 10) * 10}s`;
+
+      if (!acc[decade]) {
+        acc[decade] = {};
+      }
+      if (!acc[decade][year]) {
+        acc[decade][year] = {
           months: {},
           min: Infinity,
           max: -Infinity,
@@ -48,11 +53,11 @@ const InflationChart = () => {
           count: 0,
         };
       }
-      acc[year].months[month] = item.valor;
-      acc[year].min = Math.min(acc[year].min, item.valor);
-      acc[year].max = Math.max(acc[year].max, item.valor);
-      acc[year].total += item.valor;
-      acc[year].count += 1;
+      acc[decade][year].months[month] = item.valor;
+      acc[decade][year].min = Math.min(acc[decade][year].min, item.valor);
+      acc[decade][year].max = Math.max(acc[decade][year].max, item.valor);
+      acc[decade][year].total += item.valor;
+      acc[decade][year].count += 1;
       return acc;
     }, {});
   };
@@ -62,8 +67,8 @@ const InflationChart = () => {
     return date.toLocaleString("es-AR", { month: "long", year: "numeric" });
   };
 
-  const toggleYear = (year) => {
-    setOpenYears((prev) => ({ ...prev, [year]: !prev[year] }));
+  const toggleDecade = (decade) => {
+    setOpenDecades((prev) => ({ ...prev, [decade]: !prev[decade] }));
   };
 
   if (isLoading) {
@@ -80,42 +85,62 @@ const InflationChart = () => {
         Índices de Inflación Mensual
       </h2>
       {Object.entries(inflationData)
-        .sort(([yearA], [yearB]) => yearB.localeCompare(yearA))
-        .map(([year, data]) => (
-          <div key={year} className="mb-6">
+        .sort(([decadeA], [decadeB]) => decadeB.localeCompare(decadeA))
+        .map(([decade, years]) => (
+          <div key={decade} className="mb-6">
             <button
-              onClick={() => toggleYear(year)}
-              className="w-full text-left text-xl font-semibold mb-2 flex justify-between items-center bg-gray-100 p-2 rounded"
+              onClick={() => toggleDecade(decade)}
+              className="w-full text-left text-xl font-semibold mb-2 flex justify-between items-center bg-gray-200 p-2 rounded"
             >
-              <span>{year}</span>
-              <span className="text-sm font-normal">
-                Min: {data.min.toFixed(1)}% | Max: {data.max.toFixed(1)}% |
-                Promedio: {(data.total / data.count).toFixed(1)}%
-              </span>
-              <span>{openYears[year] ? "▼" : "▶"}</span>
+              <span>{decade}</span>
+              <span>{openDecades[decade] ? "▼" : "▶"}</span>
             </button>
-            {openYears[year] && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                  <thead>
-                    <tr className="bg-gray-50">
-                      <th className="p-2">Mes</th>
-                      <th className="p-2">Valor (%)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Object.entries(data.months)
-                      .sort(([monthA], [monthB]) =>
-                        monthB.localeCompare(monthA)
-                      )
-                      .map(([month, value]) => (
-                        <tr key={`${year}-${month}`} className="border-b">
-                          <td className="p-2">{formatDate(year, month)}</td>
-                          <td className="p-2">{value.toFixed(1)}%</td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
+            {openDecades[decade] && (
+              <div>
+                {Object.entries(years)
+                  .sort(([yearA], [yearB]) => yearB.localeCompare(yearA))
+                  .map(([year, data]) => (
+                    <div key={year} className="mb-4">
+                      <button
+                        onClick={() => toggleDecade(`${decade}-${year}`)}
+                        className="w-full text-left text-lg font-medium mb-2 flex justify-between items-center bg-gray-100 p-2 rounded"
+                      >
+                        <span>{year}</span>
+                        <span className="text-sm font-normal">
+                          Min: {data.min.toFixed(1)}% | Max:{" "}
+                          {data.max.toFixed(1)}% | Promedio:{" "}
+                          {(data.total / data.count).toFixed(1)}%
+                        </span>
+                      </button>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left">
+                          <thead>
+                            <tr className="bg-gray-50">
+                              <th className="p-2">Mes</th>
+                              <th className="p-2">Valor (%)</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {Object.entries(data.months)
+                              .sort(([monthA], [monthB]) =>
+                                monthB.localeCompare(monthA)
+                              )
+                              .map(([month, value]) => (
+                                <tr
+                                  key={`${year}-${month}`}
+                                  className="border-b"
+                                >
+                                  <td className="p-2">
+                                    {formatDate(year, month)}
+                                  </td>
+                                  <td className="p-2">{value.toFixed(1)}%</td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  ))}
               </div>
             )}
           </div>
