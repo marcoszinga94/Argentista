@@ -1,47 +1,24 @@
-# Astro Starter Kit: Minimal
+# ARGENTISTA
 
-```sh
-npm create astro@latest -- --template minimal
-```
+ARGENTISTA es una aplicación web que proporciona datos económicos en tiempo real sobre Argentina, permitiendo a los usuarios comprender la evolución económica del país de manera precisa y accesible.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+## Características
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- **Datos de inflación en tiempo real**: Accede a información actualizada sobre la inflación en Argentina.
+- **Análisis de tendencias**: Visualiza la evolución de la inflación a lo largo del tiempo.
+- **Toma de decisiones informadas**: Utiliza los datos para anticiparte a cambios en el mercado y comprender el impacto en tus finanzas personales.
 
-## 🚀 Project Structure
+## Tecnologías utilizadas
 
-Inside of your Astro project, you'll see the following folders and files:
+- **Frontend**: [Especificar las tecnologías frontend utilizadas, por ejemplo, React, Vue.js]
+- **Backend**: [Especificar las tecnologías backend utilizadas, por ejemplo, Node.js, Django]
+- **API de datos**: ARGENTISTA se basa en la API de [ArgentinaDatos](https://argentinadatos.com) para obtener información económica actualizada.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Instalación y uso
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+1. **Clonar el repositorio**:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+   ```bash
+   git clone https://github.com/tuusuario/argentista.git
+   cd argentista
+   ```
