@@ -4,35 +4,39 @@ import InflationCalculator from "../components/InflationCalculator";
 ---
 
 <Layout title="ARGENTISTA">
-  <div class="flex flex-col items-center justify-center gap-8 m-auto max-w-5xl">
-    <p class="text-center text-xl prext-pretty">
-      Una app para saber cómo va la economía de Argentina, como si fueras un
-      estadista.
+  <div
+    class="flex flex-col items-center justify-center gap-8 m-auto max-w-5xl px-4"
+  >
+    <p class="text-center text-lg leading-relaxed">
+      Descubre el estado de la economía argentina como un verdadero estadista.
+      Con ARGENTISTA, accede a datos en tiempo real y comprende el impacto de la
+      inflación de manera clara y sencilla.
     </p>
 
-    <div class="flex flex-col items-center justify-center gap-8">
+    <div class="flex flex-col items-center justify-center gap-8 w-full">
       <InflationCalculator client:load />
     </div>
 
-    <p class="text-center text-lg">
-      ARGENTISTA te permite entender la evolución económica del país con datos
-      en tiempo real, calculando la inflación de forma precisa y accesible. Con
-      esta herramienta, podrás tomar decisiones informadas, anticiparte a
-      cambios en el mercado en base a información pasada y presente, y
-      comprender mejor el impacto de la inflación en tu día a día.
+    <p class="text-center text-lg leading-relaxed">
+      Nuestra herramienta te permite analizar la evolución económica del país,
+      calcular la inflación con precisión y tomar decisiones informadas.
+      Anticípate a los cambios del mercado con información confiable basada en
+      datos actuales e históricos.
     </p>
 
-    <p class="text-center text-md">
-      Explora las cifras de inflación, descubre cómo afectan a tu poder
-      adquisitivo y prepárate para tomar el control de tus finanzas. ¡Empieza
-      ahora a usar ARGENTISTA y conviértete en un experto en economía argentina!
+    <p class="text-center text-md leading-relaxed">
+      Explora las cifras, entiende su impacto en tu poder adquisitivo y toma el
+      control de tus finanzas. ¡Empieza ahora con ARGENTISTA y conviértete en un
+      experto en economía argentina!
     </p>
 
-    <p class="items-center justify-center text-center text-gray-500 text-sm">
-      Esta app está basada en la API de <a
-        class="text-blue-500"
-        href="https://argentinadatos.com/">ArgentinaDatos</a
-      > y obtiene sus datos directamente de ella.
+    <p class="text-center text-gray-500 text-sm">
+      Esta aplicación utiliza la API de <a
+        class="text-blue-500 underline"
+        href="https://argentinadatos.com/"
+        target="_blank"
+        rel="noopener noreferrer">ArgentinaDatos</a
+      > para ofrecer información actualizada y confiable.
     </p>
   </div>
 </Layout>

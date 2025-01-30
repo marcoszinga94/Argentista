@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 import { format, subWeeks, subMonths } from "date-fns";
 import { es } from "date-fns/locale";
+import { Loader2, AlertCircle } from "lucide-react";
 
 ChartJS.register(
   CategoryScale,
@@ -32,12 +33,27 @@ const chartOptions = {
       title: {
         display: true,
         text: "Precio en ARS",
+        color: "#4B5563",
+      },
+      ticks: {
+        color: "#4B5563",
       },
     },
     x: {
       title: {
         display: true,
         text: "Fecha",
+        color: "#4B5563",
+      },
+      ticks: {
+        color: "#4B5563",
+      },
+    },
+  },
+  plugins: {
+    legend: {
+      labels: {
+        color: "#4B5563",
       },
     },
   },
@@ -52,7 +68,7 @@ const DollarHistoryChart = () => {
 
   useEffect(() => {
     fetchDollarData();
-  }, [selectedCasa, timeRange]);
+  }, [selectedCasa, timeRange]); //This line was already correct
 
   const fetchDollarData = async () => {
     setIsLoading(true);
@@ -151,35 +167,27 @@ const DollarHistoryChart = () => {
     { value: "all", label: "Todo el historial" },
   ];
 
-  if (isLoading) {
-    return (
-      <div className="bg-white p-6 rounded-lg shadow-md w-full">
-        <div className="text-center">Cargando datos del dólar...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-white p-6 rounded-lg shadow-md w-full">
-        <div className="text-center text-red-500">Error: {error}</div>
-      </div>
-    );
-  }
+  const selectStyles =
+    "p-2 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50";
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md w-full">
-      <h2 className="text-2xl font-semibold mb-4">Histórico del Dólar</h2>
-      <div className="mb-4 flex space-x-4">
+    <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 w-full m-auto">
+      <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
+        Histórico del Dólar
+      </h2>
+      <div className="mb-6 flex flex-wrap gap-4 justify-center">
         <div>
-          <label htmlFor="casa-select" className="block mb-1">
+          <label
+            htmlFor="casa-select"
+            className="block mb-2 text-lg text-gray-600"
+          >
             Tipo de Dólar:
           </label>
           <select
             id="casa-select"
             value={selectedCasa}
             onChange={(e) => setSelectedCasa(e.target.value)}
-            className="p-2 border rounded"
+            className={selectStyles}
           >
             {casasOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -189,7 +197,10 @@ const DollarHistoryChart = () => {
           </select>
         </div>
         <div>
-          <label htmlFor="time-range-select" className="block mb-1">
+          <label
+            htmlFor="time-range-select"
+            className="block mb-2 text-lg text-gray-600"
+          >
             Rango de Tiempo:
           </label>
           <select
@@ -197,10 +208,12 @@ const DollarHistoryChart = () => {
             value={timeRange}
             onChange={(e) =>
               setTimeRange(
-                e.target.value === "all" ? "all" : parseFloat(e.target.value)
+                e.target.value === "all"
+                  ? "all"
+                  : Number.parseFloat(e.target.value)
               )
             }
-            className="p-2 border rounded"
+            className={selectStyles}
           >
             {timeRangeOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -210,7 +223,20 @@ const DollarHistoryChart = () => {
           </select>
         </div>
       </div>
-      <div className="h-96">
+      <div className="h-96 relative">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+          </div>
+        )}
+        {error && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
+            <div className="flex items-center gap-2 text-red-500">
+              <AlertCircle className="h-6 w-6" />
+              <span className="text-lg">Error: {error}</span>
+            </div>
+          </div>
+        )}
         <Line data={chartData} options={chartOptions} />
       </div>
     </div>

@@ -1,5 +1,66 @@
-<footer class="[grid-area:footer] p-4 bg-blue-500 text-white">
-  <div class="container mx-auto text-center">
-    <p>&copy; 2024 Argentista. Todos los derechos reservados.</p>
+---
+import GithubIcon from "../../public/Icons/GithubIcon.astro";
+
+const currentYear = new Date().getFullYear();
+
+const footerLinks = [
+  {
+    title: "Datos",
+    links: [
+      { href: "/dolar", label: "Dólar" },
+      { href: "/inflacion", label: "Inflación" },
+    ],
+  },
+];
+---
+
+<footer class="[grid-area:footer] bg-blue-600 text-white mt-auto">
+  <div class="max-w-6xl mx-auto py-8 px-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
+      <div class="text-center sm:text-left">
+        <h2 class="text-xl font-bold mb-4">ARGENTISTA</h2>
+        <p class="text-blue-100 text-sm">
+          Monitoreando la economía argentina en tiempo real
+        </p>
+      </div>
+
+      {
+        footerLinks.map((section) => (
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold mb-4">{section.title}</h3>
+            <ul class="space-y-2">
+              {section.links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class="text-blue-100 hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="border-t border-blue-500 pt-8">
+      <div class="flex flex-col sm:flex-row justify-between items-center">
+        <p class="text-sm text-blue-100 mb-4 sm:mb-0">
+          &copy; {currentYear} Argentista. Todos los derechos reservados.
+        </p>
+
+        <div class="flex gap-4">
+          <a
+            href="https://github.com/marcoszinga94/Argentista-WebApp"
+            class="text-blue-100 hover:text-white transition-colors"
+            aria-label="GitHub"
+          >
+            <GithubIcon />
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </footer>

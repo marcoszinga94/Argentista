@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { AlertCircle, Loader2 } from "lucide-react";
 
 const InflationCalculator = () => {
   const [inflationData, setInflationData] = useState([]);
@@ -118,32 +119,50 @@ const InflationCalculator = () => {
   ).reverse();
 
   if (isLoading) {
-    return <div className="text-center">Cargando datos de inflación...</div>;
+    return (
+      <div className="flex items-center justify-center gap-2 text-blue-600 p-8">
+        <Loader2 className="h-6 w-6 animate-spin" />
+        <span className="text-lg">Cargando datos de inflación...</span>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-center text-red-500">Error: {error}</div>;
+    return (
+      <div className="flex items-center justify-center gap-2 text-red-500 p-8">
+        <AlertCircle className="h-6 w-6" />
+        <span className="text-lg">Error: {error}</span>
+      </div>
+    );
   }
 
+  const inputStyles =
+    "w-24 p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200";
+  const selectStyles =
+    "p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50";
+  const labelStyles = "text-lg text-gray-600";
+
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-4 text-center">
+    <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+      <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
         Calculadora de Inflación
       </h2>
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-2 m-auto">
-          <span className="text-xl">$</span>
+      <div className="flex flex-col gap-6">
+        <div className="flex items-center gap-2 m-auto flex-wrap justify-center">
+          <span className="text-xl font-medium text-blue-600">$</span>
           <input
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="w-32 p-2 border rounded"
+            className={`${inputStyles} font-medium`}
+            min="0"
+            placeholder="0.00"
           />
-          <span className="text-xl">en</span>
+          <span className={labelStyles}>en</span>
           <select
             value={startMonth}
             onChange={(e) => setStartMonth(e.target.value)}
-            className="p-2 border rounded"
+            className={selectStyles}
           >
             <option value="">Mes</option>
             {months.map((month) => (
@@ -152,11 +171,11 @@ const InflationCalculator = () => {
               </option>
             ))}
           </select>
-          <span className="text-xl">de</span>
+          <span className={labelStyles}>de</span>
           <select
             value={startYear}
             onChange={(e) => setStartYear(e.target.value)}
-            className="p-2 border rounded"
+            className={selectStyles}
           >
             <option value="">Año</option>
             {years.map((year) => (
@@ -166,22 +185,27 @@ const InflationCalculator = () => {
             ))}
           </select>
         </div>
+
         <div className="flex items-center m-auto">
-          <span className="text-xl">es aproximadamente equivalente a</span>
+          <span className="text-lg text-gray-500 italic">
+            es aproximadamente equivalente a
+          </span>
         </div>
-        <div className="flex items-center gap-2 m-auto">
-          <span className="text-xl">$</span>
+
+        <div className="flex items-center gap-2 m-auto flex-wrap justify-center">
+          <span className="text-xl font-medium text-blue-600">$</span>
           <input
             type="text"
             value={result ? result.adjustedAmount : ""}
             readOnly
-            className="w-32 p-2 border rounded bg-gray-100"
+            className={`${inputStyles} bg-gray-50 font-semibold text-right`}
+            placeholder="0.00"
           />
-          <span className="text-xl">en</span>
+          <span className={labelStyles}>en</span>
           <select
             value={endMonth}
             onChange={(e) => setEndMonth(e.target.value)}
-            className="p-2 border rounded"
+            className={selectStyles}
           >
             {months.map((month) => (
               <option key={month.value} value={month.value}>
@@ -189,11 +213,11 @@ const InflationCalculator = () => {
               </option>
             ))}
           </select>
-          <span className="text-xl">de</span>
+          <span className={labelStyles}>de</span>
           <select
             value={endYear}
             onChange={(e) => setEndYear(e.target.value)}
-            className="p-2 border rounded"
+            className={selectStyles}
           >
             {years.map((year) => (
               <option key={year} value={year}>
@@ -202,13 +226,22 @@ const InflationCalculator = () => {
             ))}
           </select>
         </div>
+
         {result && (
-          <div className="mt-4 p-4 bg-gray-100 rounded">
-            <p className="text-center text-pretty max-w-[400px]">
+          <div className="mt-2 p-6 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200">
+            <p className="text-center text-pretty max-w-[400px] mx-auto text-gray-700 leading-relaxed">
               Esto representa un incremento del{" "}
-              <strong>{result.totalInflation}%</strong>, es decir, un incremento
-              promedio del <strong>{result.averageMonthlyInflation}%</strong>{" "}
-              por mes (<strong>{result.annualizedInflation}%</strong>{" "}
+              <strong className="text-blue-700">
+                {result.totalInflation}%
+              </strong>
+              , es decir, un incremento promedio del{" "}
+              <strong className="text-blue-700">
+                {result.averageMonthlyInflation}%
+              </strong>{" "}
+              por mes (
+              <strong className="text-blue-700">
+                {result.annualizedInflation}%
+              </strong>{" "}
               anualizado).
             </p>
           </div>

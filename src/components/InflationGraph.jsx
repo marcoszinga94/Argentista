@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { Loader2, AlertCircle } from "lucide-react";
 
 ChartJS.register(
   CategoryScale,
@@ -63,7 +64,7 @@ const InflationGraph = () => {
     if (startDate && endDate) {
       updateChart();
     }
-  }, [startDate, endDate, inflationData]);
+  }, [startDate, endDate]); // Removed unnecessary dependency: inflationData
 
   const updateChart = () => {
     const filteredData = inflationData.filter(
@@ -79,29 +80,63 @@ const InflationGraph = () => {
         {
           label: "Inflación Mensual (%)",
           data: values,
-          borderColor: "rgb(75, 192, 192)",
+          borderColor: "rgb(59, 130, 246)", // blue-500
+          backgroundColor: "rgba(59, 130, 246, 0.1)", // blue-500 with opacity
           tension: 0.1,
         },
       ],
     });
   };
 
-  if (isLoading) {
-    return <div className="text-center">Cargando datos de inflación...</div>;
-  }
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Inflación (%)",
+          color: "#4B5563", // text-gray-600
+        },
+        ticks: {
+          color: "#4B5563", // text-gray-600
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: "Fecha",
+          color: "#4B5563", // text-gray-600
+        },
+        ticks: {
+          color: "#4B5563", // text-gray-600
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        labels: {
+          color: "#4B5563", // text-gray-600
+        },
+      },
+    },
+  };
 
-  if (error) {
-    return <div className="text-center text-red-500">Error: {error}</div>;
-  }
+  const inputStyles =
+    "w-full p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200";
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-auto">
-      <h2 className="text-2xl font-semibold mb-4">
+    <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+      <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
         Gráfico de Evolución de la Inflación
       </h2>
-      <div className="space-y-4 mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div>
-          <label htmlFor="startDate" className="block mb-1">
+          <label
+            htmlFor="startDate"
+            className="block mb-2 text-lg text-gray-600"
+          >
             Fecha Inicial:
           </label>
           <input
@@ -109,11 +144,11 @@ const InflationGraph = () => {
             id="startDate"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="w-full p-2 border rounded"
+            className={inputStyles}
           />
         </div>
         <div>
-          <label htmlFor="endDate" className="block mb-1">
+          <label htmlFor="endDate" className="block mb-2 text-lg text-gray-600">
             Fecha Final:
           </label>
           <input
@@ -121,15 +156,26 @@ const InflationGraph = () => {
             id="endDate"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="w-full p-2 border rounded"
+            className={inputStyles}
           />
         </div>
       </div>
-      {chartData && (
-        <div className="h-96">
-          <Line data={chartData} options={{ maintainAspectRatio: false }} />
-        </div>
-      )}
+      <div className="h-96 relative">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+          </div>
+        )}
+        {error && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
+            <div className="flex items-center gap-2 text-red-500">
+              <AlertCircle className="h-6 w-6" />
+              <span className="text-lg">Error: {error}</span>
+            </div>
+          </div>
+        )}
+        {chartData && <Line data={chartData} options={chartOptions} />}
+      </div>
     </div>
   );
 };

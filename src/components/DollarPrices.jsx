@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { AlertCircle } from "lucide-react";
 
 const DollarPrices = () => {
   const [dollarPrices, setDollarPrices] = useState([]);
@@ -24,37 +25,63 @@ const DollarPrices = () => {
     fetchDollarPrices();
   }, []);
 
-  if (isLoading) {
-    return <div className="text-center">Cargando precios del dólar...</div>;
-  }
+  const renderPriceCard = (price) => (
+    <div
+      key={price.casa}
+      className="p-6 border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200"
+    >
+      <h3 className="text-xl font-semibold mb-4 text-blue-700">
+        {price.nombre || "Cargando..."}
+      </h3>
+      <ul className="space-y-2">
+        <li className="flex justify-between">
+          <span className="text-gray-600">Compra:</span>
+          <span className="font-medium">
+            ${price.compra?.toFixed(2) ?? "N/A"}
+          </span>
+        </li>
+        <li className="flex justify-between">
+          <span className="text-gray-600">Venta:</span>
+          <span className="font-medium">
+            ${price.venta?.toFixed(2) ?? "N/A"}
+          </span>
+        </li>
+        <li className="text-sm text-gray-500 mt-4">
+          Última actualización:{" "}
+          {price.fechaActualizacion
+            ? new Date(price.fechaActualizacion).toLocaleString()
+            : "Cargando..."}
+        </li>
+      </ul>
+    </div>
+  );
 
-  if (error) {
-    return <div className="text-center text-red-500">Error: {error}</div>;
-  }
+  const renderContent = () => {
+    if (isLoading) {
+      return Array(6)
+        .fill(null)
+        .map((_, index) => renderPriceCard({ casa: `loading-${index}` }));
+    }
+
+    if (error) {
+      return (
+        <div className="col-span-full flex items-center justify-center gap-2 text-red-500 p-8">
+          <AlertCircle className="h-6 w-6" />
+          <span className="text-lg">Error: {error}</span>
+        </div>
+      );
+    }
+
+    return dollarPrices.map(renderPriceCard);
+  };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md w-full">
-      <h2 className="text-2xl font-semibold mb-4">Precios del Dólar</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {dollarPrices.map((price) => (
-          <div key={price.casa} className="mb-4 p-4 border rounded-md">
-            <h3 className="text-xl font-medium mb-2">{price.nombre}</h3>
-            <ul>
-              <li className="mb-1">
-                <span className="font-medium">Compra:</span> $
-                {price.compra?.toFixed(2) ?? "N/A"}
-              </li>
-              <li className="mb-1">
-                <span className="font-medium">Venta:</span> $
-                {price.venta?.toFixed(2) ?? "N/A"}
-              </li>
-              <li className="text-sm text-gray-600">
-                Última actualización:{" "}
-                {new Date(price.fechaActualizacion).toLocaleString()}
-              </li>
-            </ul>
-          </div>
-        ))}
+    <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+      <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
+        Precios del Dólar
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {renderContent()}
       </div>
     </div>
   );

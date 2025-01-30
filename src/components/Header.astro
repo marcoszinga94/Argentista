@@ -8,22 +8,40 @@ const navItems = [
 ];
 ---
 
-<header class="[grid-area:header] p-4 bg-blue-500 text-white z-50">
-  <nav>
-    <div class="flex flex-col items-center justify-between mx-auto px-4">
-      <div class="flex items-center">
-        <a href="/" class="text-xl font-bold"><h1>ARGENTISTA</h1></a>
+<header
+  class="[grid-area:header] sticky top-0 bg-blue-600 text-white shadow-lg"
+>
+  <nav class="max-w-6xl mx-auto">
+    <div class="flex flex-col sm:flex-row items-center justify-between p-4">
+      <div class="mb-4 sm:mb-0">
+        <a
+          href="/"
+          class="text-2xl font-extrabold hover:text-blue-100 transition-colors"
+        >
+          <h1>ARGENTISTA</h1>
+        </a>
       </div>
-      <div class="flex m-auto">
-        <ul class="flex gap-4">
+      <div>
+        <ul class="flex gap-2 sm:gap-4">
           {
             navItems.map((item) => (
-              <a
-                href={item.href}
-                class={`hover:bg-blue-600 px-3 py-2 rounded ${currentPath === item.href ? "underline underline-offset-2" : ""}`}
-              >
-                {item.label}
-              </a>
+              <li>
+                <a
+                  href={item.href}
+                  class={`
+                    px-4 py-2 rounded-lg font-medium
+                    transition-all duration-200
+                    hover:bg-blue-500 hover:shadow-md
+                    ${
+                      currentPath === item.href
+                        ? "bg-blue-700 shadow-sm"
+                        : "hover:bg-blue-500"
+                    }
+                  `}
+                >
+                  {item.label}
+                </a>
+              </li>
             ))
           }
         </ul>
