@@ -20,7 +20,7 @@
     "@vercel/speed-insights": "1.1.0",
     "argentista-webapp": "file:",
     "astro": "5.2.0",
-    "chart.js": "4.4.7",
+    "chart.js": "4.4.6",
     "cors": "2.8.5",
     "date-fns": "4.1.0",
     "express": "^4.21.2",
