@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { AlertCircle, Loader2 } from "lucide-react";
 
 const InflationCalculator = () => {
   const [inflationData, setInflationData] = useState([]);
@@ -121,7 +120,6 @@ const InflationCalculator = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center gap-2 text-blue-600 p-8">
-        <Loader2 className="h-6 w-6 animate-spin" />
         <span className="text-lg">Cargando datos de inflación...</span>
       </div>
     );
@@ -130,7 +128,6 @@ const InflationCalculator = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center gap-2 text-red-500 p-8">
-        <AlertCircle className="h-6 w-6" />
         <span className="text-lg">Error: {error}</span>
       </div>
     );

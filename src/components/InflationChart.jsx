@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { ChevronDown, ChevronRight, Loader2, AlertCircle } from "lucide-react";
 
 const InflationChart = () => {
   const [inflationData, setInflationData] = useState({});
@@ -74,7 +73,6 @@ const InflationChart = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center gap-2 text-blue-600 p-8">
-        <Loader2 className="h-8 w-8 animate-spin" />
         <span className="text-lg">Cargando datos de inflación...</span>
       </div>
     );
@@ -83,7 +81,6 @@ const InflationChart = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center gap-2 text-red-500 p-8">
-        <AlertCircle className="h-6 w-6" />
         <span className="text-lg">Error: {error}</span>
       </div>
     );
@@ -104,9 +101,9 @@ const InflationChart = () => {
             >
               <span>{decade}</span>
               {openItems[decade] ? (
-                <ChevronDown className="h-6 w-6" />
+                <img src="src/Icons/chevrondown.svg" alt="Chevron down" />
               ) : (
-                <ChevronRight className="h-6 w-6" />
+                <img src="src/Icons/chevronright.svg" alt="Chevron right" />
               )}
             </button>
             {openItems[decade] && (
@@ -130,9 +127,15 @@ const InflationChart = () => {
                             {(data.total / data.count).toFixed(1)}%
                           </span>
                           {openItems[`${decade}-${year}`] ? (
-                            <ChevronDown className="h-5 w-5" />
+                            <img
+                              src="src/Icons/chevrondown.svg"
+                              alt="Chevron down"
+                            />
                           ) : (
-                            <ChevronRight className="h-5 w-5" />
+                            <img
+                              src="src/Icons/chevronright.svg"
+                              alt="Chevron right"
+                            />
                           )}
                         </div>
                       </button>

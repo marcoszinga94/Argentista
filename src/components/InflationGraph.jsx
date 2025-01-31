@@ -10,7 +10,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Loader2, AlertCircle } from "lucide-react";
 
 ChartJS.register(
   CategoryScale,
@@ -163,13 +162,12 @@ const InflationGraph = () => {
       <div className="h-96 relative">
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
-            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+            <span>Cargando...</span>
           </div>
         )}
         {error && (
           <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
             <div className="flex items-center gap-2 text-red-500">
-              <AlertCircle className="h-6 w-6" />
               <span className="text-lg">Error: {error}</span>
             </div>
           </div>

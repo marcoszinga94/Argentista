@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { AlertCircle } from "lucide-react";
 
 const DollarPrices = () => {
   const [dollarPrices, setDollarPrices] = useState([]);
@@ -66,7 +65,6 @@ const DollarPrices = () => {
     if (error) {
       return (
         <div className="col-span-full flex items-center justify-center gap-2 text-red-500 p-8">
-          <AlertCircle className="h-6 w-6" />
           <span className="text-lg">Error: {error}</span>
         </div>
       );
