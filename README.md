@@ -19,6 +19,6 @@ ARGENTISTA es una aplicación web que proporciona datos económicos en tiempo re
 1. **Clonar el repositorio**:
 
    ```bash
-   git clone https://github.com/tuusuario/argentista.git
+   git clone https://github.com/marcoszinga94/Argentista-WebApp.git
    cd argentista
    ```
