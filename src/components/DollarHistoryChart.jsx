@@ -166,6 +166,8 @@ const DollarHistoryChart = () => {
     { value: "all", label: "Todo el historial" },
   ];
 
+  console.log(chartData);
+
   const selectStyles =
     "p-2 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50";
 
