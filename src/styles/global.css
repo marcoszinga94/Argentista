@@ -1,1 +1,63 @@
 @import "tailwindcss";
+
+:root {
+  /* Variables de color */
+  --color-azul-claro: #eff6ff;
+  --color-azul: #3b82f6;
+  --color-azul-oscuro: #1e40af;
+
+  --color-gris-claro: #f9fafb;
+  --color-gris: #6b7280;
+  --color-gris-oscuro: #374151;
+
+  --color-rojo: #ef4444;
+}
+
+/* Clases de utilidad */
+.texto-azul-claro {
+  color: var(--color-azul-claro);
+}
+.texto-azul {
+  color: var(--color-azul);
+}
+.texto-azul-oscuro {
+  color: var(--color-azul-oscuro);
+}
+
+.texto-gris-claro {
+  color: var(--color-gris-claro);
+}
+.texto-gris {
+  color: var(--color-gris);
+}
+.texto-gris-oscuro {
+  color: var(--color-gris-oscuro);
+}
+
+.texto-rojo {
+  color: var(--color-rojo);
+}
+
+.fondo-azul-claro {
+  background-color: var(--color-azul-claro);
+}
+.fondo-azul {
+  background-color: var(--color-azul);
+}
+.fondo-azul-oscuro {
+  background-color: var(--color-azul-oscuro);
+}
+
+.fondo-gris-claro {
+  background-color: var(--color-gris-claro);
+}
+.fondo-gris {
+  background-color: var(--color-gris);
+}
+.fondo-gris-oscuro {
+  background-color: var(--color-gris-oscuro);
+}
+
+.fondo-rojo {
+  background-color: var(--color-rojo);
+}
