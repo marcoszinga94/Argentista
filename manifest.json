@@ -1,0 +1,25 @@
+{
+  "name": "Argentista WebApp",
+  "short_name": "Argentista",
+  "description": "Descubre el estado de la economía argentina como un verdadero estadista.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2196f3",
+  "icons": [
+    {
+      "src": "/Icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/Icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "portrait",
+  "related_applications": [],
+  "prefer_related_applications": false
+}

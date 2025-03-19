@@ -30,8 +30,8 @@ const {
     <!-- Icono de la aplicación -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Generador del sitio -->
-    <meta name="generator" content={Astro.generator} />
+    <!-- Manifiesto -->
+    <link rel="manifest" href="manifest.json" />
 
     <!-- Meta para el SEO -->
     <meta name="description" content={description} />
@@ -71,6 +71,20 @@ const {
       </main>
       <Footer />
     </div>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .then((registration) => {
+              console.log("Service Worker registrado con éxito:", registration);
+            })
+            .catch((error) => {
+              console.log("Error al registrar el Service Worker:", error);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
 
