@@ -12,9 +12,9 @@ ARGENTISTA es una aplicación web que proporciona datos económicos en tiempo re
 
 ## Tecnologías utilizadas
 
-- **Frontend**: [React](https://reactjs.org/), [Material-UI](https://material-ui.com/) (o las tecnologías que uses)
-- **Backend**: [Node.js](https://nodejs.org/en/), [Express](https://expressjs.com/) (o las tecnologías que uses)
-- **API de datos**: ARGENTISTA se basa en la API de [ArgentinaDatos](https://argentinadatos.com) para obtener información económica actualizada.
+- **Frontend**: Astro, React y Tailwind.
+- **Backend**: Node.js.
+- **API de datos**: Basado en la API de [ArgentinaDatos](https://argentinadatos.com).
 
 ## Contribución
 
