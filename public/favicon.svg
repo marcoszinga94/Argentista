@@ -1,10 +1,12 @@
 <svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
-  <path fill="#75AADB" d="M0 0h300v100H0z" />
-  <path fill="#FFF" d="M0 100h300v100H0z" />
-  <path fill="#75AADB" d="M0 200h300v100H0z" />
-  <path fill="#34A853" d="M100 240h20v60h-20z" />
-  <path fill="#FBBC05" d="M130 220h20v80h-20z" />
-  <path fill="#EA4335" d="M160 200h20v100h-20z" /><text x="20" y="150" font-size="40"
-    font-family="Arial, sans-serif">Argentista</text><text x="20" y="180" fill="#666" font-size="16"
-    font-family="Arial, sans-serif">Estadísticas de Argentina</text>
+  <!-- Fondo con bordes redondeados -->
+  <rect width="300" height="300" rx="20" ry="20" fill="#75AADB" />
+  <rect y="100" width="300" height="100" fill="#FFF" />
+
+  <!-- Contenedor de barras con tamaño aumentado -->
+  <g transform="translate(75, 0)">
+    <rect x="5" y="130" width="40" height="100" fill="#34A853" rx="5" />
+    <rect x="55" y="100" width="40" height="130" fill="#FBBC05" rx="5" />
+    <rect x="105" y="70" width="40" height="160" fill="#EA4335" rx="5" />
+  </g>
 </svg>

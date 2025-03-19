@@ -18,14 +18,15 @@
     "@types/react-dom": "^19.0.4",
     "@vercel/analytics": "1.5.0",
     "@vercel/speed-insights": "1.2.0",
-    "argentista-webapp": "file:",
     "date-fns": "^4.1.0",
+    "punycode": "^2.3.1",
     "react": "^19.0.0",
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.0.10"
   },
   "devDependencies": {
+    "@bubblewrap/cli": "^1.13.5",
     "@types/node": "22.13.9"
   }
 }
