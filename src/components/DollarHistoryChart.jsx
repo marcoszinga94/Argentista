@@ -62,12 +62,26 @@ const DollarHistoryChart = () => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedCasa, setSelectedCasa] = useState("oficial");
+  const [selectedCasas, setSelectedCasas] = useState([
+    "oficial",
+    "blue",
+    "bolsa",
+    "cripto",
+    "mayorista",
+  ]);
   const [timeRange, setTimeRange] = useState(0.25);
+
+  const casaColors = [
+    "rgba(75, 192, 192, 0.8)", // Oficial
+    "rgba(255, 99, 132, 0.8)", // Blue
+    "rgba(54, 162, 235, 0.8)", // Bolsa
+    "rgba(255, 206, 86, 0.8)", // Cripto
+    "rgba(153, 102, 255, 0.8)", // Mayorista
+  ];
 
   useEffect(() => {
     fetchDollarData();
-  }, [selectedCasa, timeRange]); //This line was already correct
+  }, [selectedCasas, timeRange]);
 
   const fetchDollarData = async () => {
     setIsLoading(true);
@@ -82,13 +96,13 @@ const DollarHistoryChart = () => {
           : subWeeks(endDate, Math.floor(timeRange * 4));
 
     try {
-      const data = await fetchDataForDateRange(startDate, endDate);
-      if (!data.length) {
-        throw new Error(
-          "No se encontraron datos en el rango de fechas seleccionado."
-        );
-      }
-      setChartData(prepareChartData(data));
+      const allData = await fetchDataForDateRange(startDate, endDate);
+
+      // Process each dataset to fill missing data
+      const filledData = allData.map((data) => fillMissingData(data));
+
+      const preparedData = prepareChartData(filledData);
+      setChartData(preparedData);
     } catch (error) {
       setError(error.message || "Error al obtener los datos del dólar");
     } finally {
@@ -105,57 +119,71 @@ const DollarHistoryChart = () => {
       currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
     }
 
-    const data = await Promise.all(
-      dates.map(async (date) => {
-        try {
-          const response = await fetch(
-            `https://api.argentinadatos.com/v1/cotizaciones/dolares/${selectedCasa}/${date}`
-          );
-
-          if (response.ok) {
-            return { date, ...(await response.json()) };
-          } else {
-            console.warn(`No hay datos disponibles para la fecha: ${date}`);
-            return null;
+    // Fetch data for each selected casa
+    const allDataPromises = selectedCasas.map((casa) =>
+      Promise.all(
+        dates.map(async (date) => {
+          try {
+            const response = await fetch(
+              `https://api.argentinadatos.com/v1/cotizaciones/dolares/${casa}/${date}`
+            );
+            if (response.ok) {
+              const jsonData = await response.json();
+              return { date, ...jsonData };
+            } else {
+              console.warn(`No hay datos disponibles para la fecha: ${date}`);
+              return { date, venta: null };
+            }
+          } catch (error) {
+            console.error(
+              `Error al obtener datos para la fecha ${date}:`,
+              error
+            );
+            return { date, venta: null };
           }
-        } catch (error) {
-          console.error(`Error al obtener datos para la fecha ${date}:`, error);
-          return null;
-        }
-      })
+        })
+      )
     );
 
-    return data.filter((item) => item); // Filtrar valores nulos
+    const allData = await Promise.all(allDataPromises);
+    return allData;
+  };
+
+  const fillMissingData = (data) => {
+    let lastValidValue = null;
+    return data.map((item) => {
+      if (item.venta === null) {
+        // Si el valor es nulo, usa el último valor válido
+        item.venta = lastValidValue;
+      } else {
+        // Si el valor es válido, actualiza el último valor válido
+        lastValidValue = item.venta;
+      }
+      return item;
+    });
   };
 
   const prepareChartData = (data) => {
-    const labels = data.map((item) =>
+    const labels = data[0].map((item) =>
       format(new Date(item.date), "d MMM", { locale: es })
     );
-    const values = data.map((item) => item.venta);
+
+    const datasets = selectedCasas.map((casa, index) => ({
+      label: `Dólar ${casa.charAt(0).toUpperCase() + casa.slice(1)}`,
+      data: data[index].map((item) => item.venta),
+      borderColor: casaColors[index % casaColors.length],
+      backgroundColor: casaColors[index % casaColors.length].replace(
+        "0.8",
+        "0.2"
+      ),
+      tension: 0.1,
+    }));
 
     return {
       labels,
-      datasets: [
-        {
-          label: `Dólar ${selectedCasa.charAt(0).toUpperCase() + selectedCasa.slice(1)}`,
-          data: values,
-          borderColor: "rgb(75, 192, 192)",
-          tension: 0.1,
-        },
-      ],
+      datasets,
     };
   };
-
-  const casasOptions = [
-    { value: "oficial", label: "Oficial" },
-    { value: "blue", label: "Blue" },
-    { value: "bolsa", label: "Bolsa" },
-    { value: "cripto", label: "Cripto" },
-    { value: "mayorista", label: "Mayorista" },
-    { value: "solidario", label: "Solidario" },
-    { value: "turista", label: "Turista" },
-  ];
 
   const timeRangeOptions = [
     { value: 0.25, label: "1 semana" },
@@ -166,8 +194,6 @@ const DollarHistoryChart = () => {
     { value: "all", label: "Todo el historial" },
   ];
 
-  console.log(chartData);
-
   const selectStyles =
     "p-2 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50";
 
@@ -176,28 +202,25 @@ const DollarHistoryChart = () => {
       <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
         Histórico del Dólar
       </h2>
-      <div className="mb-6 flex flex-wrap gap-4 justify-center">
-        <div>
-          <label
-            htmlFor="casa-select"
-            className="block mb-2 text-lg text-gray-600"
-          >
-            Tipo de Dólar:
-          </label>
-          <select
-            id="casa-select"
-            value={selectedCasa}
-            onChange={(e) => setSelectedCasa(e.target.value)}
-            className={selectStyles}
-          >
-            {casasOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
+      <div className="h-96 relative">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
+            <div className="flex items-center gap-2 text-blue-500">
+              <span className="text-lg">Cargando datos...</span>
+            </div>
+          </div>
+        )}
+        {error && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
+            <div className="flex items-center gap-2 text-red-500">
+              <span className="text-lg">Error: {error}</span>
+            </div>
+          </div>
+        )}
+        <Line data={chartData} options={chartOptions} />
+      </div>
+      <div className="mb-6 flex flex-wrap gap-4 justify-center mt-4">
+        <div className="flex flex-row items-center gap-4">
           <label
             htmlFor="time-range-select"
             className="block mb-2 text-lg text-gray-600"
@@ -223,23 +246,6 @@ const DollarHistoryChart = () => {
             ))}
           </select>
         </div>
-      </div>
-      <div className="h-96 relative">
-        {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
-            <div className="flex items-center gap-2 text-blue-500">
-              <span className="text-lg">Cargando datos...</span>
-            </div>
-          </div>
-        )}
-        {error && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
-            <div className="flex items-center gap-2 text-red-500">
-              <span className="text-lg">Error: {error}</span>
-            </div>
-          </div>
-        )}
-        <Line data={chartData} options={chartOptions} />
       </div>
     </div>
   );
