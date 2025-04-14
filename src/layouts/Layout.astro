@@ -2,6 +2,7 @@
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
+import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 
 export interface Props {
@@ -60,6 +61,9 @@ const {
 
     <!-- Speed Insights -->
     <SpeedInsights />
+
+    <!-- Client Router -->
+    <ClientRouter />
 
     <!-- Título de la página -->
     <title>{title}</title>
