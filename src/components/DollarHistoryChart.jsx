@@ -259,11 +259,11 @@ const DollarHistoryChart = () => {
     "p-2 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50";
 
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 w-full m-auto">
-      <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
+    <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-100 w-full m-auto">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
         Histórico del Dólar
       </h2>
-      <div className="h-96 relative">
+      <div className="h-72 sm:h-96 relative">
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
             <div className="flex items-center gap-2 text-blue-500">
@@ -280,33 +280,31 @@ const DollarHistoryChart = () => {
         )}
         <Line data={chartData} options={chartOptions} />
       </div>
-      <div className="mb-6 flex flex-wrap gap-4 justify-center mt-4">
-        <div className="flex flex-row items-center gap-4">
-          <label
-            htmlFor="time-range-select"
-            className="block mb-2 text-lg text-gray-600"
-          >
-            Rango de Tiempo:
-          </label>
-          <select
-            id="time-range-select"
-            value={timeRange}
-            onChange={(e) =>
-              setTimeRange(
-                e.target.value === "all"
-                  ? "all"
-                  : Number.parseFloat(e.target.value)
-              )
-            }
-            className={selectStyles}
-          >
-            {timeRangeOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 justify-center">
+        <label
+          htmlFor="time-range-select"
+          className="text-sm sm:text-base text-gray-600"
+        >
+          Rango de Tiempo:
+        </label>
+        <select
+          id="time-range-select"
+          value={timeRange}
+          onChange={(e) =>
+            setTimeRange(
+              e.target.value === "all"
+                ? "all"
+                : Number.parseFloat(e.target.value)
+            )
+          }
+          className={`w-full sm:w-auto text-sm sm:text-base ${selectStyles}`}
+        >
+          {timeRangeOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );
