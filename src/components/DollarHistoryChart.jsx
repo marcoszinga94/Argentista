@@ -23,41 +23,6 @@ ChartJS.register(
   Legend
 );
 
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  scales: {
-    y: {
-      beginAtZero: false,
-      title: {
-        display: true,
-        text: "Precio en ARS",
-        color: "#4B5563",
-      },
-      ticks: {
-        color: "#4B5563",
-      },
-    },
-    x: {
-      title: {
-        display: true,
-        text: "Fecha",
-        color: "#4B5563",
-      },
-      ticks: {
-        color: "#4B5563",
-      },
-    },
-  },
-  plugins: {
-    legend: {
-      labels: {
-        color: "#4B5563",
-      },
-    },
-  },
-};
-
 const DollarHistoryChart = () => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [isLoading, setIsLoading] = useState(true);
@@ -65,18 +30,20 @@ const DollarHistoryChart = () => {
   const [selectedCasas, setSelectedCasas] = useState([
     "oficial",
     "blue",
-    "bolsa",
-    "cripto",
+    "contadoconliqui",
     "mayorista",
+    "cripto",
+    "tarjeta",
   ]);
   const [timeRange, setTimeRange] = useState(0.25);
 
   const casaColors = [
     "rgba(75, 192, 192, 0.8)", // Oficial
     "rgba(255, 99, 132, 0.8)", // Blue
-    "rgba(54, 162, 235, 0.8)", // Bolsa
+    "rgba(255, 159, 64, 0.8)", // Contado con liqui
+    "rgba(54, 162, 235, 0.8)", // Mayorista
     "rgba(255, 206, 86, 0.8)", // Cripto
-    "rgba(153, 102, 255, 0.8)", // Mayorista
+    "rgba(153, 102, 255, 0.8)", // Tarjeta
   ];
 
   useEffect(() => {
@@ -111,42 +78,37 @@ const DollarHistoryChart = () => {
   };
 
   const fetchDataForDateRange = async (startDate, endDate) => {
-    const dates = [];
-    let currentDate = startDate;
+    try {
+      const results = await Promise.all(
+        selectedCasas.map((casa) =>
+          fetch(
+            `https://api.argentinadatos.com/v1/cotizaciones/dolares/${casa}`
+          )
+            .then((res) => (res.ok ? res.json() : []))
+            .catch((error) => {
+              console.error(`Error fetching ${casa}:`, error);
+              return [];
+            })
+        )
+      );
 
-    while (currentDate <= endDate) {
-      dates.push(format(currentDate, "yyyy/MM/dd"));
-      currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
+      // Filter and sort data by date range
+      return results.map((casaData) =>
+        casaData
+          .filter((entry) => {
+            const entryDate = new Date(entry.fecha);
+            return entryDate >= startDate && entryDate <= endDate;
+          })
+          .sort((a, b) => new Date(a.fecha) - new Date(b.fecha))
+          .map((entry) => ({
+            date: entry.fecha,
+            venta: parseFloat(entry.venta) || null,
+          }))
+      );
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return [];
     }
-
-    // Fetch data for each selected casa
-    const allDataPromises = selectedCasas.map((casa) =>
-      Promise.all(
-        dates.map(async (date) => {
-          try {
-            const response = await fetch(
-              `https://api.argentinadatos.com/v1/cotizaciones/dolares/${casa}/${date}`
-            );
-            if (response.ok) {
-              const jsonData = await response.json();
-              return { date, ...jsonData };
-            } else {
-              console.warn(`No hay datos disponibles para la fecha: ${date}`);
-              return { date, venta: null };
-            }
-          } catch (error) {
-            console.error(
-              `Error al obtener datos para la fecha ${date}:`,
-              error
-            );
-            return { date, venta: null };
-          }
-        })
-      )
-    );
-
-    const allData = await Promise.all(allDataPromises);
-    return allData;
   };
 
   const fillMissingData = (data) => {
@@ -163,24 +125,123 @@ const DollarHistoryChart = () => {
     });
   };
 
+  const getTicksConfig = (timeRange) => {
+    if (timeRange === "all") return { maxTicksLimit: 12 };
+    if (timeRange >= 12) return { maxTicksLimit: 12 }; // 1 año
+    if (timeRange >= 6) return { maxTicksLimit: 8 }; // 6 meses
+    if (timeRange >= 3) return { maxTicksLimit: 6 }; // 3 meses
+    if (timeRange >= 1) return { maxTicksLimit: 4 }; // 1 mes
+    return { maxTicksLimit: 7 }; // 1 semana
+  };
+
+  const getPointConfig = (timeRange) => {
+    if (timeRange === "all") return { radius: 0, hitRadius: 10 };
+    if (timeRange >= 12) return { radius: 1, hitRadius: 10 };
+    if (timeRange >= 6) return { radius: 2, hitRadius: 8 };
+    if (timeRange >= 3) return { radius: 3, hitRadius: 6 };
+    if (timeRange >= 1) return { radius: 4, hitRadius: 6 };
+    return { radius: 5, hitRadius: 6 };
+  };
+
+  const getDataPointFrequency = (timeRange, totalPoints) => {
+    if (timeRange === "all") return Math.ceil(totalPoints / 1000); // 48 puntos en total
+    if (timeRange >= 12) return Math.ceil(totalPoints / 365); // 24 puntos para 1 año
+    if (timeRange >= 6) return Math.ceil(totalPoints / 180); // 12 puntos para 6 meses
+    if (timeRange >= 3) return Math.ceil(totalPoints / 90); // 8 puntos para 3 meses
+    if (timeRange >= 1) return Math.ceil(totalPoints / 30); // 6 puntos para 1 mes
+    return 1; // Todos los puntos para 1 semana
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: false,
+        title: {
+          display: true,
+          text: "Precio en ARS",
+          color: "#4B5563",
+        },
+        ticks: {
+          color: "#4B5563",
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: "Fecha",
+          color: "#4B5563",
+        },
+        ticks: {
+          color: "#4B5563",
+          ...getTicksConfig(timeRange),
+          autoSkip: true,
+          maxRotation: 45,
+          minRotation: 45,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        labels: {
+          color: "#4B5563",
+        },
+      },
+    },
+  };
+
   const prepareChartData = (data) => {
-    const labels = data[0].map((item) =>
-      format(new Date(item.date), "d MMM", { locale: es })
+    if (!data[0] || data[0].length === 0) {
+      return { labels: [], datasets: [] };
+    }
+
+    const allDates = [...new Set(data.flat().map((item) => item.date))].sort(
+      (a, b) => new Date(a) - new Date(b)
     );
+
+    // Calcular la frecuencia de los puntos
+    const frequency = getDataPointFrequency(timeRange, allDates.length);
+    const filteredDates = allDates.filter(
+      (_, index) => index % frequency === 0
+    );
+
+    const dataByDate = selectedCasas.map((_, index) => {
+      const casaData = data[index];
+      return Object.fromEntries(
+        casaData.map((item) => [item.date, item.venta])
+      );
+    });
+
+    const pointConfig = getPointConfig(timeRange);
 
     const datasets = selectedCasas.map((casa, index) => ({
       label: `Dólar ${casa.charAt(0).toUpperCase() + casa.slice(1)}`,
-      data: data[index].map((item) => item.venta),
+      data: filteredDates.map((date) => dataByDate[index][date] || null),
       borderColor: casaColors[index % casaColors.length],
       backgroundColor: casaColors[index % casaColors.length].replace(
         "0.8",
         "0.2"
       ),
       tension: 0.1,
+      spanGaps: true,
+      pointRadius: pointConfig.radius,
+      pointHitRadius: pointConfig.hitRadius,
+      pointHoverRadius: pointConfig.radius + 3,
     }));
 
     return {
-      labels,
+      labels: filteredDates.map((date) =>
+        format(
+          new Date(date),
+          timeRange >= 12
+            ? "MMM yyyy"
+            : timeRange >= 3
+              ? "d MMM yyyy"
+              : "d MMM",
+          { locale: es }
+        )
+      ),
       datasets,
     };
   };
