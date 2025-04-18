@@ -27,10 +27,8 @@ export async function fetchDolarData() {
       results.map(({ casa, data }) => [casa, data])
     );
 
-    // Create data directory if it doesn't exist
     await fs.mkdir(path.join(process.cwd(), 'src/data'), { recursive: true });
 
-    // Write the data to a JSON file
     await fs.writeFile(
       path.join(process.cwd(), 'src/data', 'dolar.json'),
       JSON.stringify(formattedData, null, 2),
