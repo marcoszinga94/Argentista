@@ -234,11 +234,13 @@ const DollarHistoryChart = () => {
       labels: filteredDates.map((date) =>
         format(
           new Date(date),
-          timeRange >= 12
-            ? "MMM yyyy"
-            : timeRange >= 3
-              ? "d MMM yyyy"
-              : "d MMM",
+          timeRange == "all"
+            ? "yyyy"
+            : timeRange >= 12
+              ? "MM-yy"
+              : timeRange >= 3
+                ? "d-MM-yy"
+                : "d-MM-yy",
           { locale: es }
         )
       ),

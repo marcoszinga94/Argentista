@@ -52,7 +52,7 @@ const CurrencyConverter = () => {
       : "0.00";
 
   const selectStyles =
-    "p-2 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50";
+    "p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50";
 
   return (
     <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-100 w-full m-auto">
@@ -75,9 +75,6 @@ const CurrencyConverter = () => {
             {isReverse ? "USD → ARS" : "ARS → USD"}
           </button>
           <div>
-            <label className="block mb-2 text-sm sm:text-base text-gray-600">
-              {isReverse ? "Dólares (USD)" : "Pesos (ARS)"}
-            </label>
             <input
               type="number"
               value={amount}
@@ -87,9 +84,6 @@ const CurrencyConverter = () => {
             />
           </div>
           <div>
-            <label className="block mb-2 text-sm sm:text-base text-gray-600">
-              Tipo de Dólar
-            </label>
             <select
               onChange={handleRateChange}
               className={`w-full text-sm sm:text-base ${selectStyles}`}

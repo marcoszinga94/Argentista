@@ -134,16 +134,17 @@ const InflationCalculator = () => {
   }
 
   const inputStyles =
-    "w-24 p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200";
+    "w-22 p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200";
   const selectStyles =
     "p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50";
   const labelStyles = "text-lg text-gray-600";
 
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-      <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
+    <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-100 w-full m-auto">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
         Calculadora de Inflación
       </h2>
+
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-2 m-auto flex-wrap justify-center">
           <span className="text-xl font-medium text-blue-600">$</span>

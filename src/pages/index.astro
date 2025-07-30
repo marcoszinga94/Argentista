@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import InflationCalculator from "../components/InflationCalculator";
+import CurrencyConverter from "../components/CurrencyConverter";
 
 declare global {
   interface Window {
@@ -19,8 +20,11 @@ declare global {
       inflación de manera clara y sencilla.
     </p>
 
-    <div class="flex flex-col items-center justify-center gap-8 w-full">
+    <div
+      class="flex md:flex-row flex-col items-center justify-center gap-8 w-full"
+    >
       <InflationCalculator client:load />
+      <CurrencyConverter client:load />
     </div>
 
     <p class="text-center text-lg leading-relaxed">
