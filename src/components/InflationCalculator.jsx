@@ -196,7 +196,7 @@ const InflationCalculator = () => {
             type="text"
             value={result ? result.adjustedAmount : ""}
             readOnly
-            className={`${inputStyles} bg-gray-50 font-semibold text-right`}
+            className={`${inputStyles} font-medium`}
             placeholder="0.00"
           />
           <span className={labelStyles}>en</span>

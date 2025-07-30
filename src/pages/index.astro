@@ -21,13 +21,15 @@ declare global {
     </p>
 
     <div
-      class="flex md:flex-row flex-col items-center justify-center gap-8 w-full"
+      class="flex flex-col items-center justify-center gap-8 m-auto max-w-5xl"
     >
-      <InflationCalculator client:load />
-      <CurrencyConverter client:load />
+      <div class="flex flex-row gap-4 w-full">
+        <InflationCalculator client:load />
+        <CurrencyConverter client:load />
+      </div>
     </div>
 
-    <p class="text-center text-lg leading-relaxed">
+    <p class="text-center text-md leading-relaxed">
       Nuestra herramienta te permite analizar la evolución económica del país,
       calcular la inflación con precisión y tomar decisiones informadas.
       Anticípate a los cambios del mercado con información confiable basada en

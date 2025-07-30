@@ -51,8 +51,11 @@ const CurrencyConverter = () => {
         : (Number(amount) / selectedRate).toFixed(2)
       : "0.00";
 
+  const inputStyles =
+    "w-22 p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200";
   const selectStyles =
     "p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50";
+  const labelStyles = "text-lg text-gray-600";
 
   return (
     <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-100 w-full m-auto">
@@ -79,14 +82,14 @@ const CurrencyConverter = () => {
               type="number"
               value={amount}
               onChange={handleAmountChange}
-              className={`w-full text-sm sm:text-base ${selectStyles}`}
+              className={`${inputStyles} w-full text-sm sm:text-base`}
               placeholder={`Ingrese monto en ${isReverse ? "dólares" : "pesos"}`}
             />
           </div>
           <div>
             <select
               onChange={handleRateChange}
-              className={`w-full text-sm sm:text-base ${selectStyles}`}
+              className={`${selectStyles} w-full text-sm sm:text-base`}
               defaultValue=""
             >
               <option value="" disabled>
@@ -100,10 +103,8 @@ const CurrencyConverter = () => {
             </select>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 sm:p-6 rounded-xl border border-blue-200">
-            <p className="text-sm sm:text-base text-gray-600 mb-2">
-              Resultado:
-            </p>
-            <p className="text-xl sm:text-3xl font-bold text-blue-800">
+            <p className={`${labelStyles}`}>Resultado:</p>
+            <p className="text-xl sm:text-3xl font-bold text-blue-800 text-center">
               {isReverse ? "ARS $" : "USD $"}
               {convertedAmount}
             </p>
