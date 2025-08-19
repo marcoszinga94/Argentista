@@ -30,6 +30,7 @@ const DollarHistoryChart = () => {
   const [selectedCasas, setSelectedCasas] = useState([
     "oficial",
     "blue",
+    "bolsa",
     "contadoconliqui",
     "mayorista",
     "cripto",
@@ -40,6 +41,7 @@ const DollarHistoryChart = () => {
   const casaColors = [
     "rgba(75, 192, 192, 0.8)", // Oficial
     "rgba(255, 99, 132, 0.8)", // Blue
+    "rgba(255, 159, 64, 0.8)", // Bolsa
     "rgba(255, 159, 64, 0.8)", // Contado con liqui
     "rgba(54, 162, 235, 0.8)", // Mayorista
     "rgba(255, 206, 86, 0.8)", // Cripto
@@ -127,28 +129,28 @@ const DollarHistoryChart = () => {
 
   const getTicksConfig = (timeRange) => {
     if (timeRange === "all") return { maxTicksLimit: 12 };
-    if (timeRange >= 12) return { maxTicksLimit: 12 }; // 1 año
-    if (timeRange >= 6) return { maxTicksLimit: 8 }; // 6 meses
-    if (timeRange >= 3) return { maxTicksLimit: 6 }; // 3 meses
-    if (timeRange >= 1) return { maxTicksLimit: 4 }; // 1 mes
+    if (timeRange == 12) return { maxTicksLimit: 12 }; // 1 año
+    if (timeRange == 6) return { maxTicksLimit: 12 }; // 6 meses
+    if (timeRange == 3) return { maxTicksLimit: 6 }; // 3 meses
+    if (timeRange == 1) return { maxTicksLimit: 30 }; // 1 mes
     return { maxTicksLimit: 7 }; // 1 semana
   };
 
   const getPointConfig = (timeRange) => {
     if (timeRange === "all") return { radius: 0, hitRadius: 10 };
-    if (timeRange >= 12) return { radius: 1, hitRadius: 10 };
-    if (timeRange >= 6) return { radius: 2, hitRadius: 8 };
-    if (timeRange >= 3) return { radius: 3, hitRadius: 6 };
-    if (timeRange >= 1) return { radius: 4, hitRadius: 6 };
+    if (timeRange == 12) return { radius: 1, hitRadius: 10 };
+    if (timeRange == 6) return { radius: 2, hitRadius: 8 };
+    if (timeRange == 3) return { radius: 3, hitRadius: 6 };
+    if (timeRange == 1) return { radius: 4, hitRadius: 6 };
     return { radius: 5, hitRadius: 6 };
   };
 
   const getDataPointFrequency = (timeRange, totalPoints) => {
     if (timeRange === "all") return Math.ceil(totalPoints / 1000); // 48 puntos en total
-    if (timeRange >= 12) return Math.ceil(totalPoints / 365); // 24 puntos para 1 año
-    if (timeRange >= 6) return Math.ceil(totalPoints / 180); // 12 puntos para 6 meses
-    if (timeRange >= 3) return Math.ceil(totalPoints / 90); // 8 puntos para 3 meses
-    if (timeRange >= 1) return Math.ceil(totalPoints / 30); // 6 puntos para 1 mes
+    if (timeRange == 12) return Math.ceil(totalPoints / 365); // 24 puntos para 1 año
+    if (timeRange == 6) return Math.ceil(totalPoints / 180); // 12 puntos para 6 meses
+    if (timeRange == 3) return Math.ceil(totalPoints / 90); // 8 puntos para 3 meses
+    if (timeRange == 1) return Math.ceil(totalPoints / 30); // 6 puntos para 1 mes
     return 1; // Todos los puntos para 1 semana
   };
 
@@ -235,12 +237,12 @@ const DollarHistoryChart = () => {
         format(
           new Date(date),
           timeRange == "all"
-            ? "yyyy"
+            ? "MMM-yyyy"
             : timeRange >= 12
-              ? "MM-yy"
+              ? "MMM-yy"
               : timeRange >= 3
-                ? "d-MM-yy"
-                : "d-MM-yy",
+                ? "d-M-yy"
+                : "d-M-yy",
           { locale: es }
         )
       ),
