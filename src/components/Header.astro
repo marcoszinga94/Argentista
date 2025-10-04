@@ -6,6 +6,21 @@ const navItems = [
   { href: "/dolar", label: "Dólar" },
   { href: "/inflacion", label: "Inflación" },
 ];
+
+const fetchDollarPrices = async () => {
+  try {
+    const response = await fetch("https://dolarapi.com/v1/dolares");
+    if (!response.ok) {
+      throw new Error("No se pudo obtener la información del dólar");
+    }
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+fetchDollarPrices();
 ---
 
 <header
@@ -49,4 +64,49 @@ const navItems = [
       </div>
     </div>
   </nav>
+  <div
+    class="relative overflow-hidden text-sm text-white bg-blue-400 h-8 flex items-center"
+  >
+    <div
+      id="ticker"
+      class="absolute whitespace-nowrap flex gap-8 px-8 animate-marquee"
+    >
+      {
+        (await fetchDollarPrices()).map((item) => (
+          <span class="inline-flex items-center gap-2">
+            <strong>{item.nombre}</strong>
+            <span>
+              ${item.compra?.toFixed(2) ?? "N/A"} / $
+              {item.venta?.toFixed(2) ?? "N/A"}
+            </span>
+          </span>
+        ))
+      }
+      {
+        (await fetchDollarPrices()).map((item) => (
+          <span class="inline-flex items-center gap-2">
+            <strong>{item.nombre}</strong>
+            <span>
+              ${item.compra?.toFixed(2) ?? "N/A"} / $
+              {item.venta?.toFixed(2) ?? "N/A"}
+            </span>
+          </span>
+        ))
+      }
+    </div>
+  </div>
 </header>
+
+<style>
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  .animate-marquee {
+    animation: marquee 35s linear infinite;
+  }
+</style>
