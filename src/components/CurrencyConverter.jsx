@@ -58,9 +58,9 @@ const CurrencyConverter = () => {
   const labelStyles = "text-lg text-gray-600";
 
   return (
-    <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-100 w-full m-auto aspect-square">
+    <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-100 w-full">
       <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
-        Convertidor de Moneda
+        Conversor de Moneda
       </h2>
 
       {isLoading && (
@@ -70,7 +70,7 @@ const CurrencyConverter = () => {
       {error && <div className="text-center text-red-500 mb-4">{error}</div>}
 
       {!isLoading && !error && (
-        <div className="space-y-4">
+        <div className="space-y-4 m-auto">
           <button
             onClick={toggleDirection}
             className="w-full p-2 sm:p-3 bg-blue-100 hover:bg-blue-200 rounded-lg text-blue-800 transition-colors duration-200 text-sm sm:text-base"
