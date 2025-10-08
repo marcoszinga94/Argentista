@@ -63,7 +63,7 @@ const InflationGraph = () => {
     if (startDate && endDate) {
       updateChart();
     }
-  }, [startDate, endDate]); // Removed unnecessary dependency: inflationData
+  }, [startDate, endDate]);
 
   const updateChart = () => {
     const filteredData = inflationData.filter(
@@ -79,8 +79,8 @@ const InflationGraph = () => {
         {
           label: "Inflación Mensual (%)",
           data: values,
-          borderColor: "rgb(59, 130, 246)", // blue-500
-          backgroundColor: "rgba(59, 130, 246, 0.1)", // blue-500 with opacity
+          borderColor: "rgb(59, 130, 246)",
+          backgroundColor: "rgba(59, 130, 246, 0.1)",
           tension: 0.1,
         },
       ],
@@ -96,46 +96,44 @@ const InflationGraph = () => {
         title: {
           display: true,
           text: "Inflación (%)",
-          color: "#4B5563", // text-gray-600
+          color: "#4B5563",
         },
         ticks: {
-          color: "#4B5563", // text-gray-600
+          color: "#4B5563",
         },
       },
       x: {
         title: {
           display: true,
           text: "Fecha",
-          color: "#4B5563", // text-gray-600
+          color: "#4B5563",
         },
         ticks: {
-          color: "#4B5563", // text-gray-600
+          color: "#4B5563",
+          maxTicksLimit: 15,
         },
       },
     },
     plugins: {
       legend: {
         labels: {
-          color: "#4B5563", // text-gray-600
+          color: "#4B5563",
         },
       },
     },
   };
 
   const inputStyles =
-    "w-full p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200";
+    "w-full p-2 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 flex-1";
 
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+    <section className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 w-full mb-auto sticky top-32 -z-10">
       <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
-        Gráfico de Evolución de la Inflación
+        Evolución de la Inflación
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
-          <label
-            htmlFor="startDate"
-            className="block mb-2 text-lg text-gray-600"
-          >
+        <div className="flex md:flex-col flex-row gap-2">
+          <label htmlFor="startDate" className="block text-lg text-gray-600">
             Fecha Inicial:
           </label>
           <input
@@ -146,8 +144,8 @@ const InflationGraph = () => {
             className={inputStyles}
           />
         </div>
-        <div>
-          <label htmlFor="endDate" className="block mb-2 text-lg text-gray-600">
+        <div className="flex md:flex-col flex-row gap-2">
+          <label htmlFor="endDate" className="block text-lg text-gray-600">
             Fecha Final:
           </label>
           <input
@@ -174,7 +172,7 @@ const InflationGraph = () => {
         )}
         {chartData && <Line data={chartData} options={chartOptions} />}
       </div>
-    </div>
+    </section>
   );
 };
 
