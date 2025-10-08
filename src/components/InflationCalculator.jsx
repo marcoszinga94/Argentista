@@ -134,28 +134,31 @@ const InflationCalculator = () => {
   }
 
   const inputStyles =
-    "w-22 p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200";
+    "w-auto p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 text-right text-md";
   const selectStyles =
     "p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50";
   const labelStyles = "text-lg text-gray-600";
 
   return (
-    <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-100 w-full m-auto aspect-square">
+    <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-100 w-full m-auto h-full">
       <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
         Calculadora de Inflación
       </h2>
 
       <div className="flex flex-col gap-6">
-        <div className="flex items-center gap-2 m-auto flex-wrap justify-center">
-          <span className="text-xl font-medium text-blue-600">$</span>
-          <input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className={`${inputStyles} font-medium`}
-            min="0"
-            placeholder="0.00"
-          />
+        <div className="flex flex-col items-center gap-2 m-auto flex-wrap justify-center">
+          <div>
+            <span className="text-xl font-medium text-blue-600">$</span>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className={`${inputStyles} font-medium`}
+              min="0"
+              placeholder="0.00"
+            />
+          </div>
+          <div>
           <span className={labelStyles}>en</span>
           <select
             value={startMonth}
@@ -183,6 +186,7 @@ const InflationCalculator = () => {
             ))}
           </select>
         </div>
+        </div>
 
         <div className="flex items-center m-auto">
           <span className="text-lg text-gray-500 italic">
@@ -190,15 +194,18 @@ const InflationCalculator = () => {
           </span>
         </div>
 
-        <div className="flex items-center gap-2 m-auto flex-wrap justify-center">
-          <span className="text-xl font-medium text-blue-600">$</span>
-          <input
-            type="text"
-            value={result ? result.adjustedAmount : ""}
-            readOnly
-            className={`${inputStyles} font-medium`}
-            placeholder="0.00"
-          />
+        <div className="flex flex-col items-center gap-2 m-auto flex-wrap justify-center">
+          <div>
+            <span className="text-xl font-medium text-blue-600">$</span>
+            <input
+              type="text"
+              value={result ? result.adjustedAmount : ""}
+              readOnly
+              className={`${inputStyles} font-medium`}
+              placeholder="0.00"
+            />
+          </div>
+          <div>
           <span className={labelStyles}>en</span>
           <select
             value={endMonth}
@@ -223,6 +230,7 @@ const InflationCalculator = () => {
               </option>
             ))}
           </select>
+        </div>
         </div>
 
         {result && (
