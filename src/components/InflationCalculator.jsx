@@ -134,9 +134,9 @@ const InflationCalculator = () => {
   }
 
   const inputStyles =
-    "w-auto p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 text-right text-md";
+    "w-auto p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 text-right text-md mx-2";
   const selectStyles =
-    "p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50";
+    "p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50 mx-2";
   const labelStyles = "text-lg text-gray-600";
 
   return (
@@ -159,33 +159,33 @@ const InflationCalculator = () => {
             />
           </div>
           <div>
-          <span className={labelStyles}>en</span>
-          <select
-            value={startMonth}
-            onChange={(e) => setStartMonth(e.target.value)}
-            className={selectStyles}
-          >
-            <option value="">Mes</option>
-            {months.map((month) => (
-              <option key={month.value} value={month.value}>
-                {month.label}
-              </option>
-            ))}
-          </select>
-          <span className={labelStyles}>de</span>
-          <select
-            value={startYear}
-            onChange={(e) => setStartYear(e.target.value)}
-            className={selectStyles}
-          >
-            <option value="">Año</option>
-            {years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </div>
+            <span className={labelStyles}>en</span>
+            <select
+              value={startMonth}
+              onChange={(e) => setStartMonth(e.target.value)}
+              className={selectStyles}
+            >
+              <option value="">Mes</option>
+              {months.map((month) => (
+                <option key={month.value} value={month.value}>
+                  {month.label}
+                </option>
+              ))}
+            </select>
+            <span className={labelStyles}>de</span>
+            <select
+              value={startYear}
+              onChange={(e) => setStartYear(e.target.value)}
+              className={selectStyles}
+            >
+              <option value="">Año</option>
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="flex items-center m-auto">
@@ -206,31 +206,31 @@ const InflationCalculator = () => {
             />
           </div>
           <div>
-          <span className={labelStyles}>en</span>
-          <select
-            value={endMonth}
-            onChange={(e) => setEndMonth(e.target.value)}
-            className={selectStyles}
-          >
-            {months.map((month) => (
-              <option key={month.value} value={month.value}>
-                {month.label}
-              </option>
-            ))}
-          </select>
-          <span className={labelStyles}>de</span>
-          <select
-            value={endYear}
-            onChange={(e) => setEndYear(e.target.value)}
-            className={selectStyles}
-          >
-            {years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </div>
+            <span className={labelStyles}>en</span>
+            <select
+              value={endMonth}
+              onChange={(e) => setEndMonth(e.target.value)}
+              className={selectStyles}
+            >
+              {months.map((month) => (
+                <option key={month.value} value={month.value}>
+                  {month.label}
+                </option>
+              ))}
+            </select>
+            <span className={labelStyles}>de</span>
+            <select
+              value={endYear}
+              onChange={(e) => setEndYear(e.target.value)}
+              className={selectStyles}
+            >
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {result && (
