@@ -5,10 +5,10 @@ import InflationGraph from "../components/InflationGraph";
 ---
 
 <Layout title="ARGENTISTA - Inflación">
-  <div class="flex flex-col items-center justify-center gap-8 m-auto max-w-5xl">
-    <div class="flex flex-col gap-4 m-auto w-full">
-      <InflationGraph client:load />
-      <InflationChart client:load />
-    </div>
+  <div
+    class="flex flex-col md:flex-row justify-center gap-8 m-auto max-w-5xl w-full"
+  >
+    <InflationGraph client:load />
+    <InflationChart client:load />
   </div>
 </Layout>
