@@ -127,7 +127,7 @@ const InflationGraph = () => {
     "w-full p-2 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 flex-1";
 
   return (
-    <section className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 w-full mb-auto sticky top-32 -z-10">
+    <section className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 w-full mb-auto md:sticky md:top-32 md:-z-10">
       <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
         Evolución de la Inflación
       </h2>
