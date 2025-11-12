@@ -75,7 +75,7 @@ const DollarPrices = () => {
 
   return (
     <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-100">
-      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center bg-linear-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
         Precios del Dólar
       </h2>
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

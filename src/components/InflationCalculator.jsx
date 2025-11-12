@@ -141,7 +141,7 @@ const InflationCalculator = () => {
 
   return (
     <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-100 w-full m-auto h-full">
-      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center bg-linear-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
         Calculadora de Inflación
       </h2>
 
@@ -234,7 +234,7 @@ const InflationCalculator = () => {
         </div>
 
         {result && (
-          <div className="mt-2 p-6 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200">
+          <div className="mt-2 p-6 rounded-xl bg-linear-to-br from-blue-50 to-blue-100 border border-blue-200">
             <p className="text-center text-pretty max-w-[400px] mx-auto text-gray-700 leading-relaxed">
               Esto representa un incremento del{" "}
               <strong className="text-blue-700">

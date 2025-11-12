@@ -59,7 +59,7 @@ const CurrencyConverter = () => {
 
   return (
     <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-100 w-full">
-      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center bg-linear-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
         Conversor de Moneda
       </h2>
 
@@ -102,7 +102,7 @@ const CurrencyConverter = () => {
               ))}
             </select>
           </div>
-          <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 sm:p-6 rounded-xl border border-blue-200">
+          <div className="bg-linear-to-r from-blue-50 to-blue-100 p-4 sm:p-6 rounded-xl border border-blue-200">
             <p className={`${labelStyles}`}>Resultado:</p>
             <p className="text-xl sm:text-3xl font-bold text-blue-800 text-center">
               {isReverse ? "ARS $" : "USD $"}
