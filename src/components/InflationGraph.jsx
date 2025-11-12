@@ -124,7 +124,7 @@ const InflationGraph = () => {
   };
 
   const inputStyles =
-    "w-full p-2 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 flex-1";
+    "w-full md:flex-1 p-2 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200";
 
   return (
     <section className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 w-full mb-auto md:sticky md:top-32 md:-z-10">
