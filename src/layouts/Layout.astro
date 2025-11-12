@@ -53,7 +53,7 @@ const {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
 
-    <!-- Código de Google AdSense -->
+    <!-- Código de GoogleAdSense -->
     <script
       is:inline
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7173856593005932"
@@ -63,17 +63,16 @@ const {
     <SpeedInsights />
     <!-- Client Router -->
     <ClientRouter />
-
     <!-- Título de la página -->
     <title>{title}</title>
   </head>
   <body class="bg-gray-100 text-gray-900">
     <div class="flex flex-col min-h-screen">
-      <Header />
+      <Header transition:persist />
       <main class="flex px-4 py-8 flex-1">
         <slot />
       </main>
-      <Footer />
+      <Footer transition:persist />
     </div>
   </body>
 </html>
