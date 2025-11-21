@@ -7,18 +7,19 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest"
   },
   "dependencies": {
     "@astrojs/check": "0.9.5",
     "@astrojs/react": "4.4.2",
-    "@astrojs/vercel": "9.0.0",
+    "@astrojs/vercel": "^8.0.4",
     "@tailwindcss/vite": "4.1.17",
     "@types/react": "19.2.4",
     "@types/react-dom": "19.2.3",
     "@vercel/analytics": "1.5.0",
     "@vercel/speed-insights": "1.2.0",
-    "astro": "5.15.5",
+    "astro": "^5.16.0",
     "date-fns": "4.1.0",
     "react": "19.2.0",
     "react-chartjs-2": "5.3.1",
@@ -26,6 +27,7 @@
     "tailwindcss": "4.1.17"
   },
   "devDependencies": {
-    "@types/node": "24.10.1"
+    "@types/node": "24.10.1",
+    "vitest": "^4.0.13"
   }
 }
