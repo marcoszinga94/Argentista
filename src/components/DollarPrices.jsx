@@ -29,20 +29,20 @@ const DollarPrices = () => {
       key={price.casa}
       className="group p-6 bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300"
     >
-      <h3 className="text-xl font-bold mb-4 text-gray-800 group-hover:text-blue-600 transition-colors z-10 capitalize">
+      <h3 className="text-xl text-center font-bold mb-2 text-gray-800 group-hover:text-blue-600 transition-colors z-10 capitalize">
         {price.nombre || "Cargando..."}
       </h3>
       
       <div className="space-y-3 z-10">
-        <div className="flex justify-between items-end pb-2 border-b border-gray-50">
-          <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">Compra</span>
-          <span className="text-2xl font-bold text-gray-900">
+        <div className="flex justify-between items-end border-b border-gray-50">
+          <span className="text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wide">Compra</span>
+          <span className="text-xs md:text-xl font-bold text-gray-900">
             ${price.compra?.toFixed(2) ?? "N/A"}
           </span>
         </div>
         <div className="flex justify-between items-end">
-          <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">Venta</span>
-          <span className="text-2xl font-bold text-blue-600">
+          <span className="text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wide">Venta</span>
+          <span className="text-xs md:text-xl font-bold text-blue-600">
             ${price.venta?.toFixed(2) ?? "N/A"}
           </span>
         </div>
