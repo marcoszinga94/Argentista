@@ -87,7 +87,7 @@ const InflationChart = () => {
   }
 
   return (
-    <section className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 w-full mb-0 md:flex-1">
+    <section className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 w-full mb-0 flex-1">
       <h2 className="text-3xl font-bold mb-8 text-center bg-linear-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
         Índices de Inflación Mensual
       </h2>
