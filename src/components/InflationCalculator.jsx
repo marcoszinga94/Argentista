@@ -58,7 +58,6 @@ const InflationCalculator = () => {
 
   const calculateInflation = () => {
     if (!amount || !startMonth || !startYear || !endMonth || !endYear) {
-      alert("Por favor, complete todos los campos");
       return;
     }
 
@@ -71,7 +70,6 @@ const InflationCalculator = () => {
     const endIndex = inflationData.findIndex((item) => item.fecha > endDate);
 
     if (startIndex === -1 || endIndex === -1) {
-      alert("No hay datos suficientes para este rango de fechas");
       return;
     }
 
@@ -99,18 +97,18 @@ const InflationCalculator = () => {
   };
 
   const months = [
-    { value: "01", label: "enero" },
-    { value: "02", label: "febrero" },
-    { value: "03", label: "marzo" },
-    { value: "04", label: "abril" },
-    { value: "05", label: "mayo" },
-    { value: "06", label: "junio" },
-    { value: "07", label: "julio" },
-    { value: "08", label: "agosto" },
-    { value: "09", label: "septiembre" },
-    { value: "10", label: "octubre" },
-    { value: "11", label: "noviembre" },
-    { value: "12", label: "diciembre" },
+    { value: "01", label: "Enero" },
+    { value: "02", label: "Febrero" },
+    { value: "03", label: "Marzo" },
+    { value: "04", label: "Abril" },
+    { value: "05", label: "Mayo" },
+    { value: "06", label: "Junio" },
+    { value: "07", label: "Julio" },
+    { value: "08", label: "Agosto" },
+    { value: "09", label: "Septiembre" },
+    { value: "10", label: "Octubre" },
+    { value: "11", label: "Noviembre" },
+    { value: "12", label: "Diciembre" },
   ];
 
   const years = Array.from({ length: 30 }, (_, i) =>
@@ -119,139 +117,155 @@ const InflationCalculator = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center gap-2 text-blue-600 p-8">
-        <span className="text-lg">Cargando datos de inflación...</span>
+      <div className="flex items-center justify-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center gap-2 text-red-500 p-8">
-        <span className="text-lg">Error: {error}</span>
+      <div className="p-6 bg-red-50 border border-red-100 text-red-600 rounded-2xl text-center">
+        <span className="font-medium">Error: {error}</span>
       </div>
     );
   }
 
   const inputStyles =
-    "w-auto p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 text-right text-md mx-2";
+    "w-full p-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200 font-medium text-gray-700 text-right";
   const selectStyles =
-    "p-2.5 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50 mx-2";
-  const labelStyles = "text-lg text-gray-600";
+    "w-full p-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200 font-medium text-gray-700 cursor-pointer hover:bg-gray-100";
+  const labelStyles = "text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2 block";
 
   return (
-    <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-100 w-full m-auto h-full">
-      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center bg-linear-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
+    <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 w-full m-auto h-full">
+      <h2 className="text-3xl font-black mb-8 text-center text-blue-600 tracking-tight">
         Calculadora de Inflación
       </h2>
 
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col items-center gap-2 m-auto flex-wrap justify-center">
-          <div>
-            <span className="text-xl font-medium text-blue-600">$</span>
-            <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              className={`${inputStyles} font-medium`}
-              min="0"
-              placeholder="0.00"
-            />
-          </div>
-          <div>
-            <span className={labelStyles}>en</span>
-            <select
-              value={startMonth}
-              onChange={(e) => setStartMonth(e.target.value)}
-              className={selectStyles}
-            >
-              <option value="">Mes</option>
-              {months.map((month) => (
-                <option key={month.value} value={month.value}>
-                  {month.label}
-                </option>
-              ))}
-            </select>
-            <span className={labelStyles}>de</span>
-            <select
-              value={startYear}
-              onChange={(e) => setStartYear(e.target.value)}
-              className={selectStyles}
-            >
-              <option value="">Año</option>
-              {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="flex items-center m-auto">
-          <span className="text-lg text-gray-500 italic">
-            es aproximadamente equivalente a
-          </span>
-        </div>
-
-        <div className="flex flex-col items-center gap-2 m-auto flex-wrap justify-center">
-          <div>
-            <span className="text-xl font-medium text-blue-600">$</span>
-            <input
-              type="text"
-              value={result ? result.adjustedAmount : ""}
-              readOnly
-              className={`${inputStyles} font-medium`}
-              placeholder="0.00"
-            />
-          </div>
-          <div>
-            <span className={labelStyles}>en</span>
-            <select
-              value={endMonth}
-              onChange={(e) => setEndMonth(e.target.value)}
-              className={selectStyles}
-            >
-              {months.map((month) => (
-                <option key={month.value} value={month.value}>
-                  {month.label}
-                </option>
-              ))}
-            </select>
-            <span className={labelStyles}>de</span>
-            <select
-              value={endYear}
-              onChange={(e) => setEndYear(e.target.value)}
-              className={selectStyles}
-            >
-              {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
+      <div className="flex flex-col gap-8">
+        <div className="bg-gray-50/50 p-6 rounded-2xl border border-gray-100 hover:border-blue-100 transition-colors">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start text-center">
+            <div className="md:col-span-4">
+              <label className={labelStyles}>Monto Inicial</label>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-semibold">$</span>
+                <input
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className={`${inputStyles} pl-8 text-lg`}
+                  min="0"
+                  placeholder="0.00"
+                />
+              </div>
+            </div>
+            <div className="md:col-span-4">
+              <label className={labelStyles}>Mes Inicio</label>
+              <select
+                value={startMonth}
+                onChange={(e) => setStartMonth(e.target.value)}
+                className={selectStyles}
+              >
+                <option value="">Seleccionar Mes</option>
+                {months.map((month) => (
+                  <option key={month.value} value={month.value}>
+                    {month.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="md:col-span-4">
+              <label className={labelStyles}>Año Inicio</label>
+              <select
+                value={startYear}
+                onChange={(e) => setStartYear(e.target.value)}
+                className={selectStyles}
+              >
+                <option value="">Seleccionar Año</option>
+                {years.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
-        {result && (
-          <div className="mt-2 p-6 rounded-xl bg-linear-to-br from-blue-50 to-blue-100 border border-blue-200">
-            <p className="text-center text-pretty max-w-[400px] mx-auto text-gray-700 leading-relaxed">
-              Esto representa un incremento del{" "}
-              <strong className="text-blue-700">
-                {result.totalInflation}%
-              </strong>
-              , es decir, un incremento promedio del{" "}
-              <strong className="text-blue-700">
-                {result.averageMonthlyInflation}%
-              </strong>{" "}
-              por mes (
-              <strong className="text-blue-700">
-                {result.annualizedInflation}%
-              </strong>{" "}
-              anualizado).
-            </p>
+        <div className="flex items-center justify-center -my-4 z-10">
+          <div className="bg-white p-2 rounded-full shadow-md border border-gray-100 text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
+            </svg>
           </div>
-        )}
+        </div>
+
+        {/* Result Section */}
+        <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start text-center">
+            <div className="md:col-span-4">
+              <label className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-2 block">Monto Final</label>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-400 font-semibold">$</span>
+                <input
+                  type="text"
+                  value={result ? result.adjustedAmount : ""}
+                  readOnly
+                  className={`${inputStyles} pl-8 text-lg bg-white border-blue-200 text-blue-900 font-bold`}
+                  placeholder="0.00"
+                />
+              </div>
+            </div>
+            <div className="md:col-span-4">
+              <label className={labelStyles}>Mes Final</label>
+              <select
+                value={endMonth}
+                onChange={(e) => setEndMonth(e.target.value)}
+                className={selectStyles}
+              >
+                {months.map((month) => (
+                  <option key={month.value} value={month.value}>
+                    {month.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="md:col-span-4">
+              <label className={labelStyles}>Año Final</label>
+              <select
+                value={endYear}
+                onChange={(e) => setEndYear(e.target.value)}
+                className={selectStyles}
+              >
+                {years.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {result && (
+            <div className="mt-6 pt-6 border-t border-blue-200/50">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center align-center">
+                <div className="bg-white/60 p-4 rounded-xl backdrop-blur-sm">
+                  <p className="text-sm text-gray-500 mb-1">Inflación Total</p>
+                  <p className="text-2xl font-bold text-blue-600">{result.totalInflation}%</p>
+                </div>
+                <div className="bg-white/60 p-4 rounded-xl backdrop-blur-sm">
+                  <p className="text-sm text-gray-500 mb-1">Promedio Mensual</p>
+                  <p className="text-2xl font-bold text-blue-600">{result.averageMonthlyInflation}%</p>
+                </div>
+                <div className="bg-white/60 p-4 rounded-xl backdrop-blur-sm">
+                  <p className="text-sm text-gray-500 mb-1">Anualizado</p>
+                  <p className="text-2xl font-bold text-blue-600">{result.annualizedInflation}%</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

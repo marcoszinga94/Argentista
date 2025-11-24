@@ -39,13 +39,13 @@ const DollarHistoryChart = () => {
   const [timeRange, setTimeRange] = useState(0.25);
 
   const casaColors = [
-    "rgba(75, 192, 192, 0.8)", // Oficial
-    "rgba(255, 99, 132, 0.8)", // Blue
-    "rgba(255, 159, 64, 0.8)", // Bolsa
-    "rgba(255, 159, 64, 0.8)", // Contado con liqui
-    "rgba(54, 162, 235, 0.8)", // Mayorista
-    "rgba(255, 206, 86, 0.8)", // Cripto
-    "rgba(153, 102, 255, 0.8)", // Tarjeta
+    "rgba(14, 165, 233, 1)", // Sky 500 - Oficial
+    "rgba(239, 68, 68, 1)", // Red 500 - Blue
+    "rgba(249, 115, 22, 1)", // Orange 500 - Bolsa
+    "rgba(168, 85, 247, 1)", // Purple 500 - Contado con liqui
+    "rgba(59, 130, 246, 1)", // Blue 500 - Mayorista
+    "rgba(234, 179, 8, 1)", // Yellow 500 - Cripto
+    "rgba(16, 185, 129, 1)", // Emerald 500 - Tarjeta
   ];
 
   useEffect(() => {
@@ -157,26 +157,52 @@ const DollarHistoryChart = () => {
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
     scales: {
       y: {
         beginAtZero: false,
+        grid: {
+          color: 'rgba(0, 0, 0, 0.05)',
+        },
         title: {
           display: true,
           text: "Precio en ARS",
-          color: "#4B5563",
+          color: "#6B7280",
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12,
+            weight: '500',
+          }
         },
         ticks: {
-          color: "#4B5563",
+          color: "#6B7280",
+          font: {
+            family: "'Inter', sans-serif",
+          }
         },
       },
       x: {
+        grid: {
+          display: false,
+        },
         title: {
           display: true,
           text: "Fecha",
-          color: "#4B5563",
+          color: "#6B7280",
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12,
+            weight: '500',
+          }
         },
         ticks: {
-          color: "#4B5563",
+          color: "#6B7280",
+          font: {
+            family: "'Inter', sans-serif",
+          },
           ...getTicksConfig(timeRange),
           autoSkip: true,
           maxRotation: 45,
@@ -186,10 +212,37 @@ const DollarHistoryChart = () => {
     },
     plugins: {
       legend: {
+        position: 'bottom',
         labels: {
-          color: "#4B5563",
+          usePointStyle: true,
+          padding: 20,
+          color: "#374151",
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12,
+            weight: '500',
+          }
         },
       },
+      tooltip: {
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        titleColor: '#111827',
+        bodyColor: '#374151',
+        borderColor: '#E5E7EB',
+        borderWidth: 1,
+        padding: 12,
+        boxPadding: 6,
+        usePointStyle: true,
+        titleFont: {
+          family: "'Inter', sans-serif",
+          size: 14,
+          weight: 'bold',
+        },
+        bodyFont: {
+          family: "'Inter', sans-serif",
+          size: 13,
+        },
+      }
     },
   };
 
@@ -221,15 +274,15 @@ const DollarHistoryChart = () => {
       label: `Dólar ${casa.charAt(0).toUpperCase() + casa.slice(1)}`,
       data: filteredDates.map((date) => dataByDate[index][date] || null),
       borderColor: casaColors[index % casaColors.length],
-      backgroundColor: casaColors[index % casaColors.length].replace(
-        "0.8",
-        "0.2"
-      ),
-      tension: 0.1,
+      backgroundColor: casaColors[index % casaColors.length],
+      tension: 0.3,
+      borderWidth: 2,
       spanGaps: true,
       pointRadius: pointConfig.radius,
       pointHitRadius: pointConfig.hitRadius,
       pointHoverRadius: pointConfig.radius + 3,
+      pointBackgroundColor: '#fff',
+      pointBorderWidth: 2,
     }));
 
     return {
@@ -260,55 +313,60 @@ const DollarHistoryChart = () => {
   ];
 
   const selectStyles =
-    "p-2 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 bg-white hover:bg-gray-50";
+    "w-full sm:w-auto p-2.5 pr-8 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200 font-medium text-gray-700 cursor-pointer hover:bg-gray-100 text-sm sm:text-base";
 
   return (
-    <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-100 w-full m-auto">
-      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center bg-linear-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
-        Histórico del Dólar
-      </h2>
-      <div className="h-72 sm:h-96 relative">
+    <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 w-full m-auto transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+        <h2 className="text-2xl sm:text-3xl font-black text-blue-600 tracking-tight">
+          Histórico del Dólar
+        </h2>
+        
+        <div className="flex items-center gap-3">
+          <label
+            htmlFor="time-range-select"
+            className="text-sm font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap"
+          >
+            Rango:
+          </label>
+          <select
+            id="time-range-select"
+            value={timeRange}
+            onChange={(e) =>
+              setTimeRange(
+                e.target.value === "all"
+                  ? "all"
+                  : Number.parseFloat(e.target.value)
+              )
+            }
+            className={selectStyles}
+          >
+            {timeRangeOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="h-72 sm:h-96 relative w-full">
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
-            <div className="flex items-center gap-2 text-blue-500">
-              <span className="text-lg">Cargando datos...</span>
+          <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-10 rounded-2xl">
+            <div className="flex flex-col items-center gap-3">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <span className="text-sm font-medium text-gray-500">Cargando datos...</span>
             </div>
           </div>
         )}
         {error && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
-            <div className="flex items-center gap-2 text-red-500">
-              <span className="text-lg">Error: {error}</span>
+          <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-10 rounded-2xl">
+            <div className="p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-center">
+              <span className="font-medium">Error: {error}</span>
             </div>
           </div>
         )}
         <Line data={chartData} options={chartOptions} />
-      </div>
-      <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 justify-center">
-        <label
-          htmlFor="time-range-select"
-          className="text-sm sm:text-base text-gray-600"
-        >
-          Rango de Tiempo:
-        </label>
-        <select
-          id="time-range-select"
-          value={timeRange}
-          onChange={(e) =>
-            setTimeRange(
-              e.target.value === "all"
-                ? "all"
-                : Number.parseFloat(e.target.value)
-            )
-          }
-          className={`w-full sm:w-auto text-sm sm:text-base ${selectStyles}`}
-        >
-          {timeRangeOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
       </div>
     </div>
   );

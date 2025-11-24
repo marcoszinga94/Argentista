@@ -3,6 +3,8 @@ import { getViteConfig } from 'astro/config';
 
 export default getViteConfig({
   test: {
-    // Vitest configuration options
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.ts',
+    globals: true,
   },
 } as any);

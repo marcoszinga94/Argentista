@@ -79,9 +79,12 @@ const InflationGraph = () => {
         {
           label: "Inflación Mensual (%)",
           data: values,
-          borderColor: "rgb(59, 130, 246)",
-          backgroundColor: "rgba(59, 130, 246, 0.1)",
-          tension: 0.1,
+          borderColor: "rgb(37, 99, 235)", // blue-600
+          backgroundColor: "rgba(37, 99, 235, 0.1)",
+          tension: 0.3,
+          borderWidth: 2,
+          pointRadius: 2,
+          pointHoverRadius: 5,
         },
       ],
     });
@@ -90,51 +93,107 @@ const InflationGraph = () => {
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
     scales: {
       y: {
         beginAtZero: true,
+        grid: {
+          color: 'rgba(0, 0, 0, 0.05)',
+        },
         title: {
           display: true,
           text: "Inflación (%)",
-          color: "#4B5563",
+          color: "#6B7280",
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12,
+            weight: '500',
+          }
         },
         ticks: {
-          color: "#4B5563",
+          color: "#6B7280",
+          font: {
+            family: "'Inter', sans-serif",
+          }
         },
       },
       x: {
+        grid: {
+          display: false,
+        },
         title: {
           display: true,
           text: "Fecha",
-          color: "#4B5563",
+          color: "#6B7280",
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12,
+            weight: '500',
+          }
         },
         ticks: {
-          color: "#4B5563",
-          maxTicksLimit: 15,
+          color: "#6B7280",
+          font: {
+            family: "'Inter', sans-serif",
+          },
+          maxTicksLimit: 12,
+          autoSkip: true,
+          maxRotation: 45,
+          minRotation: 45,
         },
       },
     },
     plugins: {
       legend: {
+        position: 'bottom',
         labels: {
-          color: "#4B5563",
+          usePointStyle: true,
+          padding: 20,
+          color: "#374151",
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12,
+            weight: '500',
+          }
         },
       },
+      tooltip: {
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        titleColor: '#111827',
+        bodyColor: '#374151',
+        borderColor: '#E5E7EB',
+        borderWidth: 1,
+        padding: 12,
+        boxPadding: 6,
+        usePointStyle: true,
+        titleFont: {
+          family: "'Inter', sans-serif",
+          size: 14,
+          weight: 'bold',
+        },
+        bodyFont: {
+          family: "'Inter', sans-serif",
+          size: 13,
+        },
+      }
     },
   };
 
   const inputStyles =
-    "w-full md:flex-1 p-2 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200";
+    "w-full p-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200 font-medium text-gray-700";
 
   return (
-    <section className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 w-full mb-auto md:sticky md:top-32 md:-z-10 flex-1">
-      <h2 className="text-3xl font-bold mb-8 text-center bg-linear-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
+    <section className="bg-white p-6 sm:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 w-full mb-auto md:sticky md:top-32 flex-1">
+      <h2 className="text-3xl font-black mb-8 text-center text-blue-600 tracking-tight">
         Evolución de la Inflación
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div className="flex md:flex-col flex-row gap-2">
-          <label htmlFor="startDate" className="block text-lg text-gray-600">
-            Fecha Inicial:
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="startDate" className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+            Fecha Inicial
           </label>
           <input
             type="date"
@@ -144,9 +203,9 @@ const InflationGraph = () => {
             className={inputStyles}
           />
         </div>
-        <div className="flex md:flex-col flex-row gap-2">
-          <label htmlFor="endDate" className="block text-lg text-gray-600">
-            Fecha Final:
+        <div className="flex flex-col gap-2">
+          <label htmlFor="endDate" className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+            Fecha Final
           </label>
           <input
             type="date"
@@ -157,16 +216,19 @@ const InflationGraph = () => {
           />
         </div>
       </div>
-      <div className="h-96 relative">
+      <div className="h-96 relative w-full">
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
-            <span>Cargando...</span>
+          <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-10 rounded-2xl">
+            <div className="flex flex-col items-center gap-3">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <span className="text-sm font-medium text-gray-500">Cargando datos...</span>
+            </div>
           </div>
         )}
         {error && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
-            <div className="flex items-center gap-2 text-red-500">
-              <span className="text-lg">Error: {error}</span>
+          <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-10 rounded-2xl">
+            <div className="p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-center">
+              <span className="font-medium">Error: {error}</span>
             </div>
           </div>
         )}
